@@ -161,7 +161,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a asp-controller="Productos" asp-action="Index" class="nav-link text-white">
+                            <a asp-area="" asp-controller="Productos" asp-action="Index" class="nav-link text-white">
                                 <i class="nav-icon bi bi-cup-hot-fill"></i>
                                 <p class="ml-1">Productos</p>
                             </a>
@@ -192,7 +192,7 @@
             <section class="container mx-auto">
                 <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
                 @RenderBody()
-                @RenderSection("scripts", required: false)
+                @*@RenderSection("scripts", required: false)*@
             </section>
             <!-- /.content -->
         </div>

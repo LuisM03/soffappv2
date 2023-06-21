@@ -1,0 +1,129 @@
+﻿@model IEnumerable<soffapp.Models.Proveedor>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+
+@*-------------------------------Titulo y hora------------------------------*@
+
+<div class="row w-100">
+    <h4 class="col">
+        Proveedores
+    </h4>
+    <h4 class="col d-flex justify-content-end">
+        11:21 PM
+    </h4>
+</div>
+
+
+
+
+@*-------------------------------------------------------------*@
+<table class="border w-100 ">
+    <tr>
+
+
+    @*----------------------------------Buscador---------------------------*@
+        <td class="" style="width: 436px; height:45px; ">
+            <input id="buscador" class="w-100  rounded-start" placeholder="Buscar">
+    </td>
+    @*--------------------------------Ooicones lugar-----------------------------*@
+
+
+    <td class=" ">
+        <select placeholder="lugar" class="margin-rigth: 30px">
+             
+            <option value="opcion1">Opción 1</option>
+            <option value="opcion2">Opción 2</option>
+            <option value="opcion3">Opción 3</option>
+        </select>
+    </td>
+
+
+     <td >
+        <button class="btn btn-outline-primary w-50">
+            Generar Reporte
+        </button>
+
+    </td>
+    @*------------------------------Boton para resgistrar un nuevo proveedor-------------------------------*@
+
+    <td class="">
+        <button class="btn btn-outline-primary w-50">
+            <a asp-action="Create">Create New</a>
+        </button>
+    </td>
+
+    </tr>
+</table>
+@*-------------------------------------------------------------*@
+<table class="table border text-muted " style="max-width: 1283px;">
+    <thead>
+        <tr class="fs-6">
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Empresa)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaRegistro)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Correo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ciudad)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Estado)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Empresa)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaRegistro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Correo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ciudad)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Estado)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.IdProveedor">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdProveedor">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.IdProveedor">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

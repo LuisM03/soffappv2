@@ -50,7 +50,7 @@ namespace soffapp.Controllers
             }
             else
             {
-                context.Venta.Remove(venta);
+                context.Venta.Re(venta);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }
