@@ -12,4 +12,8 @@ public partial class Producto
     public decimal Precio { get; set; }
 
     public bool? Estado { get; set; }
+
+    public virtual ICollection<AsociacionProducto> AsociacionProductos { get; set; } = new List<AsociacionProducto>();
+
+    public virtual ICollection<OrdenVentum> OrdenVenta { get; set; } = new List<OrdenVentum>();
 }

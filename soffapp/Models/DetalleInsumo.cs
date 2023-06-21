@@ -15,5 +15,7 @@ public partial class DetalleInsumo
 
     public bool Estado { get; set; }
 
+    public virtual ICollection<AsociacionProducto> AsociacionProductos { get; set; } = new List<AsociacionProducto>();
+
     public virtual Insumo IdInsumoNavigation { get; set; } = null!;
 }

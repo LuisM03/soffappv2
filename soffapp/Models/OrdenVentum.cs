@@ -16,4 +16,8 @@ public partial class OrdenVentum
     public decimal PrecioUnitario { get; set; }
 
     public decimal Total { get; set; }
+
+    public virtual Producto IdProductoNavigation { get; set; } = null!;
+
+    public virtual Ventum IdVentaNavigation { get; set; } = null!;
 }

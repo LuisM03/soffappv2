@@ -48,6 +48,16 @@ public partial class SoffDataContext : DbContext
             entity.Property(e => e.IdAsociacion).HasColumnName("id_asociacion");
             entity.Property(e => e.IdDetalleInsumo).HasColumnName("id_detalle_insumo");
             entity.Property(e => e.IdProducto).HasColumnName("id_producto");
+
+            entity.HasOne(d => d.IdDetalleInsumoNavigation).WithMany(p => p.AsociacionProductos)
+                .HasForeignKey(d => d.IdDetalleInsumo)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_asociacion_producto_detalle_insumo");
+
+            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.AsociacionProductos)
+                .HasForeignKey(d => d.IdProducto)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_asociacion_producto_producto");
         });
 
         modelBuilder.Entity<Compra>(entity =>
@@ -55,6 +65,8 @@ public partial class SoffDataContext : DbContext
             entity.HasKey(e => e.IdCompra).HasName("PK__compra__C4BAA60485813B99");
 
             entity.ToTable("compra");
+
+            entity.HasIndex(e => e.IdProveedor, "IX_compra_id_proveedor");
 
             entity.Property(e => e.IdCompra).HasColumnName("id_compra");
             entity.Property(e => e.FechaCompra)
@@ -77,6 +89,8 @@ public partial class SoffDataContext : DbContext
 
             entity.ToTable("detalle_insumo");
 
+            entity.HasIndex(e => e.IdInsumo, "IX_detalle_insumo_id_insumo");
+
             entity.Property(e => e.IdDetalle).HasColumnName("id_detalle");
             entity.Property(e => e.Cantidad).HasColumnName("cantidad");
             entity.Property(e => e.Estado).HasColumnName("estado");
@@ -89,7 +103,7 @@ public partial class SoffDataContext : DbContext
             entity.HasOne(d => d.IdInsumoNavigation).WithMany(p => p.DetalleInsumos)
                 .HasForeignKey(d => d.IdInsumo)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__detalle_i__estad__412EB0B6");
+                .HasConstraintName("FK_detalle_insumo_insumo");
         });
 
         modelBuilder.Entity<Insumo>(entity =>
@@ -97,6 +111,8 @@ public partial class SoffDataContext : DbContext
             entity.HasKey(e => e.IdInsumo).HasName("PK__insumo__D4F202B18C032D1E");
 
             entity.ToTable("insumo");
+
+            entity.HasIndex(e => e.IdProveedor, "IX_insumo_id_proveedor");
 
             entity.Property(e => e.IdInsumo).HasColumnName("id_insumo");
             entity.Property(e => e.Estado).HasColumnName("estado");
@@ -128,6 +144,10 @@ public partial class SoffDataContext : DbContext
             entity.HasKey(e => e.IdOrden).HasName("PK__orden_co__DD5B8F33D58ECB75");
 
             entity.ToTable("orden_compra");
+
+            entity.HasIndex(e => e.IdCompra, "IX_orden_compra_id_compra");
+
+            entity.HasIndex(e => e.IdInsumo, "IX_orden_compra_id_insumo");
 
             entity.Property(e => e.IdOrden).HasColumnName("id_orden");
             entity.Property(e => e.Cantidad)
@@ -170,6 +190,16 @@ public partial class SoffDataContext : DbContext
             entity.Property(e => e.Total)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("total");
+
+            entity.HasOne(d => d.IdProductoNavigation).WithMany(p => p.OrdenVenta)
+                .HasForeignKey(d => d.IdProducto)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_orden_venta_producto");
+
+            entity.HasOne(d => d.IdVentaNavigation).WithMany(p => p.OrdenVenta)
+                .HasForeignKey(d => d.IdVenta)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK_orden_venta_venta");
         });
 
         modelBuilder.Entity<Producto>(entity =>
