@@ -5,15 +5,48 @@
 }
 
 <div>
-    <div>
-        <select class="form-select">
-            <option value="1"></option>
-        </select>
-        <form method="post" asp-action="Create">
-            <button type="submit" class="btn btn-primary">
-                Agregar venta
+    <div class="w-100 row">
+        
+        <div class="col-2">
+            <button class="btn btn-dark">
+                Gestionar reporte
             </button>
-        </form>
+        </div>
+        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
+            <form method="post" asp-action="Create">
+                <button type="submit" class="btn btn-primary">
+                    Agregar venta
+                </button>
+            </form>
+        </div>
     </div>
+</div>
+
+<div class="mt-4 border rounded bg-white">
+    <table class="table mb-0 table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Fecha</td>
+                <td>Tipo Venta</td>
+                <td>Metodo</td>
+                <td>Cantidad Ordenes</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var venta in ViewBag.Ventas)
+            {
+                <tr>
+                    <td>@venta.IdVenta</td>
+                    <td>@venta.FechaVenta</td>
+                    <td>@venta.TipoVenta</td>
+                    <td>@venta.Metodo</td>
+                    <td>@venta.CantidadOrdenes</td>
+                    <td>@venta.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>
 

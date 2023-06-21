@@ -14,13 +14,31 @@ namespace soffapp.Controllers
 
         public IActionResult Index()
         {
-            var ventas = context.Venta.Join(
+            var ventas = context.Venta
+                .Join(
                   context.OrdenVenta,
                   venta => venta.IdVenta,
                   orden => orden.IdVenta,
-                  (venta, orden) => new { venta, orden }
+                  (venta, orden) => new { Venta = venta, OrdenVenta = orden }
               ).ToList();
-            ViewBag.Ventas = ventas;
+            var ventasConOrdenes = ventas
+                .GroupBy(
+                    v => v.Venta,
+                    v => v.OrdenVenta,
+                    (venta, ordenes) =>
+                    {
+                        venta.OrdenVenta = ordenes.ToList();
+                        return new { 
+                            venta.IdVenta, 
+                            CantidadOrdenes  = venta.OrdenVenta.Count(),
+                            venta.Metodo,
+                            venta.TipoVenta,
+                            venta.FechaVenta,
+                            venta.Total
+                        };
+                    }
+                ).ToList();
+            ViewBag.Ventas = ventasConOrdenes;
             return View();
         }
 
@@ -50,7 +68,7 @@ namespace soffapp.Controllers
             }
             else
             {
-                context.Venta.Re(venta);
+                context.Venta.Remove(venta);
                 context.SaveChanges();
                 return RedirectToAction("Index");
             }

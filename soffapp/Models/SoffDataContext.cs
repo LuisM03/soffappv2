@@ -278,6 +278,7 @@ public partial class SoffDataContext : DbContext
                 .HasColumnName("total");
         });
 
+
         OnModelCreatingPartial(modelBuilder);
     }
 
