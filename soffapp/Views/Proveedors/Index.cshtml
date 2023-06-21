@@ -29,7 +29,11 @@
 
     @*----------------------------------Buscador---------------------------*@
         <td class="" style="width: 436px; height:45px; ">
-            <input id="buscador" class="w-100  rounded-start" placeholder="Buscar">
+            <form method="get" action="@Url.Action("Buscar", "Proveedor")">
+                <input type="text" name="nombre" placeholder="Buscar proveedor..." />
+                <input type="submit" value="Buscar" />
+            </form>
+
     </td>
     @*--------------------------------Ooicones lugar-----------------------------*@
 
@@ -52,7 +56,7 @@
     </td>
     @*------------------------------Boton para resgistrar un nuevo proveedor-------------------------------*@
 
-    <td class="">
+    <td class="d-flex justify-content-end">
         <button class="btn btn-outline-primary w-50">
             <a asp-action="Create">Create New</a>
         </button>
@@ -61,9 +65,13 @@
     </tr>
 </table>
 @*-------------------------------------------------------------*@
-<table class="table border text-muted " style="max-width: 1283px;">
+<table class="table border text-muted  mt-2" style="min-width: 1283px;">
     <thead>
         <tr class="fs-6">
+
+            <th>
+                @Html.DisplayNameFor(model=> model.IdProveedor)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
@@ -94,6 +102,9 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProveedor)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
