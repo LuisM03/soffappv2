@@ -33,6 +33,7 @@ public partial class SoffDataContext : DbContext
 
     public virtual DbSet<Ventum> Venta { get; set; }
 
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
