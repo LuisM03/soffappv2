@@ -23,5 +23,37 @@ namespace soffapp.Controllers
             ViewBag.Ventas = ventas;
             return View();
         }
+
+        public async Task<IActionResult> Create(Ventum venta)
+        {
+            if (!ModelState.IsValid)
+            {
+                venta.Total = 0;
+                venta.Metodo = "";
+                venta.FechaVenta = DateTime.Parse(DateTime.Today.ToString("D"));
+                venta.TipoVenta = "";
+                context.Add(venta);
+                context.SaveChanges();
+                return Redirect($"/OrdenVenta/Create/{venta.IdVenta}");
+            }else
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        public async Task<IActionResult> Delete(string id) 
+        {
+            var venta = await context.Venta.FindAsync(long.Parse(id));
+            if (venta == null)
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                context.Venta.Remove(venta);
+                context.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
     }
 }

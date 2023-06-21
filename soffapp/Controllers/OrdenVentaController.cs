@@ -48,7 +48,7 @@ namespace soffapp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([Bind(Prefix = "Item1")] OrdenVentum ordenVenta, [Bind(Prefix = "Item2")] Ventum venta)
+        public IActionResult Create([Bind(Prefix = "Item1")] OrdenVentum ordenVenta, [Bind(Prefix = "Item2")] Ventum venta, AsociacionProducto asociacion)
         {
             var producto = context.Productos.Where(x => x.IdProducto == ordenVenta.IdProducto).FirstOrDefault()!;
             ordenVenta.PrecioUnitario = producto.Precio;
