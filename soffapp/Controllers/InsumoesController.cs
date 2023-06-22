@@ -55,20 +55,23 @@ namespace soffapp.Controllers
         }
 
         // POST: Insumoes/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdInsumo,IdProveedor,Nombre,FechaCaducidad,Stock,Medida,Precio,Estado")] Insumo insumo)
         {
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 _context.Add(insumo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            //else
+            {
+
             ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", insumo.IdProveedor);
             return View(insumo);
+            }
         }
 
         // GET: Insumoes/Edit/5
@@ -95,12 +98,12 @@ namespace soffapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(long id, [Bind("IdInsumo,IdProveedor,Nombre,FechaCaducidad,Stock,Medida,Precio,Estado")] Insumo insumo)
         {
-            if (id != insumo.IdInsumo)
-            {
-                return NotFound();
-            }
+            //if (id != insumo.IdInsumo)
+            //{
+            //    return NotFound();
+            //}
 
-            if (ModelState.IsValid)
+            //if (ModelState.IsValid)
             {
                 try
                 {
