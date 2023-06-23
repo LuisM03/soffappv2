@@ -1,52 +1,108 @@
-﻿@model soffapp.Models.OrdenCompra
-
+﻿@model Tuple<OrdenCompra, Compra>;
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Compras";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+@{
+    var total = 0;
+    foreach (var detalle in ViewBag.Detalles)
+    {
+        total += detalle.Total;
+    }
 
-<h4>OrdenCompra</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="IdCompra" class="control-label"></label>
-                <select asp-for="IdCompra" class ="form-control" asp-items="ViewBag.IdCompra"></select>
+}
+
+
+<div class="grid row g-4 column-2 py-2">
+    <div class="col-8">
+        <form class="row g-2" asp-action="Create" method="post">
+            <div class="col-4">
+                <label>Insumo</label>
+                <select class="form-control form-select" asp-for="Item1.IdInsumo" aria-label="Default select example" asp-items="@(new SelectList(ViewBag.Insumos, "IdInsumo", "Nombre"))">
+                    <option>Seleccione</option>
+                </select>
             </div>
-            <div class="form-group">
-                <label asp-for="IdInsumo" class="control-label"></label>
-                <select asp-for="IdInsumo" class ="form-control" asp-items="ViewBag.IdInsumo"></select>
+            <div class="col-4">
+                <label>Cantidad</label>
+                <input type="number" asp-for="Item1.Cantidad" placeholder="Cantidad de insumo" class="form-control" />
             </div>
-            <div class="form-group">
-                <label asp-for="Cantidad" class="control-label"></label>
-                <input asp-for="Cantidad" class="form-control" />
-                <span asp-validation-for="Cantidad" class="text-danger"></span>
+            <input type="hidden" asp-for="Item1.IdCompra" value="@ViewBag.IdCompra" />
+            <div class="col-4 d-flex align-items-end justify-content-end">
+                <button class="btn btn-primary" type="submit">
+                    Agregar insumo
+                </button>
             </div>
-            <div class="form-group">
-                <label asp-for="PrecioUnitario" class="control-label"></label>
-                <input asp-for="PrecioUnitario" class="form-control" />
-                <span asp-validation-for="PrecioUnitario" class="text-danger"></span>
+        </form>
+        <div class="mt-3 border rounded bg-white">
+            <table class="table table-borderless mb-0">
+                <thead>
+                    <tr class="text-gray bg-gray-300">
+                        <th>Insumo</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var detalle in ViewBag.Detalles)
+                    {
+                        <tr>
+                            <td>@detalle.Nombre</td>
+                            <td>@detalle.Cantidad</td>
+                            <td>@detalle.PrecioUnitario</td>
+                            <td>@detalle.Total</td>
+                            <td class="d-flex align-items-center">
+                                <a class="btn mr-2 border py-1 px-2">
+                                    <i class="bi bi-input-cursor"></i>
+                                </a>
+                                <a href="@Url.Action("Delete", "OrdenCompra", new { id = detalle.IdOrden, otroId = detalle.IdCompra})" class="btn border py-1 px-2">
+                                    <i class="bi bi-trash3"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-4 p-2 bg-white rounded border px-4 py-4">
+
+        <form class="detail-container" asp-action="ConfirmSale" method="post">
+            <input type="hidden" asp-for="Item2.IdCompra" value="@ViewBag.IdCompra" />
+            <div>
+                <div class="w-100 d-flex flex-column mb-3 align-items-center">
+                    <p class="w-100 h4 mb-3 text-center"><strong>MANDISA</strong></p>
+                    <p class="mb-0">NIT 71227771-4</p>
+                    <p class="mb-0">Diagonal 57 #20-27, Navarra/Bello</p>
+                    <p class="mb-0">(+57) 3146486791</p>
+                </div>
+                <div class="d-flex align-items-center justify-content-between">
+                    <p class="mb-0">Sub total</p>
+                    <p class="mb-0">$@total</p>
+                </div>
+                <hr />
+                <div class="d-flex flex-column align-items-center justify-content-between">
+                    <p class="mb-0 display-4"><strong>$@total</strong></p>
+                    <p class="mb-0">Total</p>
+                </div>
+                <hr />
+                <div class="">
+                    <p class="mb-0"><strong>Proveedor</strong></p>
+                    <select class="form-control" asp-for="Item2.IdProveedor">
+                        <option value="efectivo">Efectivo</option>
+                        <option value="transferencia">Transferencia</option>
+                    </select>
+                </div>
+
+                <input type="hidden" asp-for="Item2.Total" value="@total" />
             </div>
-            <div class="form-group">
-                <label asp-for="Total" class="control-label"></label>
-                <input asp-for="Total" class="form-control" />
-                <span asp-validation-for="Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="w-100 d-flex flex-column mt-auto">
+                <a class="btn btn-light border mb-2" asp-controller="Compras" asp-action="Delete" asp-route-id="@ViewBag.IdCompra">Cancelar compra</a>
+                <button class="btn btn-primary" type="submit">Realizar compra</button>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}

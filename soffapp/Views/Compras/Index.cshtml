@@ -1,48 +1,50 @@
-﻿@model IEnumerable<soffapp.Models.Compra>
-
+﻿@model soffapp.Models.Compra;
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Compras";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<div>
+    <div class="w-100 row">
+        
+        <div class="col-2">
+            <button class="btn btn-dark">
+                Gestionar reporte
+            </button>
+        </div>
+        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
+            <form method="post" asp-action="Create">
+                <button type="submit" class="btn btn-primary">
+                    Agregar compra
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.FechaCompra)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Total)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IdProveedorNavigation)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.FechaCompra)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdProveedorNavigation.IdProveedor)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.IdCompra">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdCompra">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdCompra">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="mt-4 border rounded bg-white">
+    <table class="table mb-0 table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Fecha</td>
+                <td>Proveedor</td>
+                <td>Cantidad Ordenes</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var compra in ViewBag.Compras)
+            {
+                <tr>
+                    <td>@compra.IdCompra</td>
+                    <td>@compra.FechaCompra</td>
+                    <td>@compra.IdProveedor</td>
+                    <td>@compra.CantidadOrdenes</td>
+                    <td>@compra.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
