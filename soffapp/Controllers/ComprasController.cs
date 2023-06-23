@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using soffapp.Models;
 
@@ -11,155 +6,82 @@ namespace soffapp.Controllers
 {
     public class ComprasController : Controller
     {
-        private readonly SoffDataContext _context;
+        private SoffDataContext context = new SoffDataContext();
 
         public ComprasController(SoffDataContext context)
         {
-            _context = context;
+            this.context = context;
         }
 
-        // GET: Compras
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var soffDataContext = _context.Compras.Include(c => c.IdProveedorNavigation);
-            return View(await soffDataContext.ToListAsync());
-        }
-
-        // GET: Compras/Details/5
-        public async Task<IActionResult> Details(long? id)
-        {
-            if (id == null || _context.Compras == null)
-            {
-                return NotFound();
-            }
-
-            var compra = await _context.Compras
-                .Include(c => c.IdProveedorNavigation)
-                .FirstOrDefaultAsync(m => m.IdCompra == id);
-            if (compra == null)
-            {
-                return NotFound();
-            }
-
-            return View(compra);
-        }
-
-        // GET: Compras/Create
-        public IActionResult Create()
-        {
-            ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor");
+            var compras = context.Compras
+                .Join(
+                  context.OrdenCompras,
+                  compra => compra.IdCompra,
+                  orden => orden.IdCompra,
+                  (compra, orden) => new { Compra = compra, OrdenCompras = orden }
+              ).ToList();
+            var comprasConOrdenes = compras
+                .GroupBy(
+                    v => v.Compra,
+                    v => v.OrdenCompras,
+                    (compra, ordenes) =>
+                    {
+                        compra.OrdenCompras = ordenes.ToList();
+                        return new
+                        {
+                            compra.IdCompra,
+                            CantidadOrdenes = compra.OrdenCompras.Count(),
+                            compra.IdProveedor,
+                            compra.FechaCompra,
+                            compra.Total
+                        };
+                    }
+                ).ToList();
+            ViewBag.Compras = comprasConOrdenes;
             return View();
         }
 
-        // POST: Compras/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdCompra,IdProveedor,FechaCompra,Total")] Compra compra)
+        public async Task<IActionResult> Create(Compra compra)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                _context.Add(compra);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var proveedor = await context.Proveedors.ToListAsync();
+                if (proveedor.Count() > 0)
+                {
+                    compra.IdProveedor = proveedor[0].IdProveedor;
+                    compra.Total = 0;
+                    compra.FechaCompra = DateTime.Parse(DateTime.Today.ToString("D"));
+                    context.Add(compra);
+                    context.SaveChanges();
+                    return Redirect($"/OrdenCompras/Create/{compra.IdCompra}");
+                }
+                else
+                {
+                    return Redirect("/");  
+                }
+
             }
-            ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", compra.IdProveedor);
-            return View(compra);
+            else
+            {
+                return RedirectToAction("Index");
+            }
         }
 
-        // GET: Compras/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Compras == null)
-            {
-                return NotFound();
-            }
-
-            var compra = await _context.Compras.FindAsync(id);
+            var compra = await context.Compras.FindAsync(long.Parse(id));
             if (compra == null)
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-            ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", compra.IdProveedor);
-            return View(compra);
-        }
-
-        // POST: Compras/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("IdCompra,IdProveedor,FechaCompra,Total")] Compra compra)
-        {
-            if (id != compra.IdCompra)
+            else
             {
-                return NotFound();
+                context.Compras.Remove(compra);
+                context.SaveChanges();
+                return RedirectToAction("Index");
             }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(compra);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!CompraExists(compra.IdCompra))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", compra.IdProveedor);
-            return View(compra);
-        }
-
-        // GET: Compras/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null || _context.Compras == null)
-            {
-                return NotFound();
-            }
-
-            var compra = await _context.Compras
-                .Include(c => c.IdProveedorNavigation)
-                .FirstOrDefaultAsync(m => m.IdCompra == id);
-            if (compra == null)
-            {
-                return NotFound();
-            }
-
-            return View(compra);
-        }
-
-        // POST: Compras/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            if (_context.Compras == null)
-            {
-                return Problem("Entity set 'SoffDataContext.Compras'  is null.");
-            }
-            var compra = await _context.Compras.FindAsync(id);
-            if (compra != null)
-            {
-                _context.Compras.Remove(compra);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool CompraExists(long id)
-        {
-          return (_context.Compras?.Any(e => e.IdCompra == id)).GetValueOrDefault();
         }
     }
 }
