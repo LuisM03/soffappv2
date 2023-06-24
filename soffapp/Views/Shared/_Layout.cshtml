@@ -192,7 +192,7 @@
             <section class="container mx-auto">
                 <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
                 @RenderBody()
-                @RenderSection("scripts", required: false)
+                @*@RenderSection("scripts", required: false)*@
             </section>
             <!-- /.content -->
         </div>
@@ -217,5 +217,7 @@
     <script src="../adminlte/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
     <script src="../adminlte/dist/js/demo.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.8.0/chart.min.js" integrity="sha512-sW/w8s4RWTdFFSduOTGtk4isV1+190E/GghVffMA9XczdJ2MDzSzLEubKAs5h0wzgSJOQTRYyaz73L3d6RtJSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
