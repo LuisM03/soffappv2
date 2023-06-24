@@ -4,7 +4,7 @@
 
 namespace soffapp.Migrations
 {
-    /// <inheritdoc />
+    /// <inheritdoc /> 
     public partial class nuevasrelaciones : Migration
     {
         /// <inheritdoc />
