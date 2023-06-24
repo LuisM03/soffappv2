@@ -32,6 +32,7 @@
                 <td>Metodo</td>
                 <td>Cantidad Ordenes</td>
                 <td>Total</td>
+                <td>Acciones</td>
             </tr>
         </thead>
         <tbody>
@@ -44,6 +45,11 @@
                     <td>@venta.Metodo</td>
                     <td>@venta.CantidadOrdenes</td>
                     <td>@venta.Total</td>
+                    <td>
+                        <a asp-controller="OrdenVenta" asp-action="Details" asp-route-id="@venta.IdVenta" class="btn border rounded">
+                            <i class="bi bi-file-zip"></i>
+                        </a>
+                    </td>
                 </tr>
             }
         </tbody>
