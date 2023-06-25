@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using soffapp.Models;
 using System.Diagnostics;
-
+using soffapp.Areas;
 namespace soffapp.Controllers
 {
     public class HomeController : Controller
@@ -15,7 +15,18 @@ namespace soffapp.Controllers
 
         public IActionResult Index()
         {
-            return View();
+
+            //if (!User.Identity.IsAuthenticated)
+            //{
+            //    return RedirectToAction("./Areas/Identity/Pages/Account/Login");
+
+            //}
+            //else
+            //{
+                return View();
+
+            //}
+
         }
 
         public IActionResult Privacy()

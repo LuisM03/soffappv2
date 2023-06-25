@@ -28,9 +28,18 @@ namespace soffapp.Controllers
         // GET: Proveedors
         public async Task<IActionResult> Index()
         {
-              return _context.Proveedors != null ? 
-                          View(await _context.Proveedors.ToListAsync()) :
-                          Problem("Entity set 'SoffDataContext.Proveedors'  is null.");
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+            else { 
+
+                return _context.Proveedors != null ?
+                            View(await _context.Proveedors.ToListAsync()) :
+                            Problem("Entity set 'SoffDataContext.Proveedors'  is null.");
+                
+            };
         }
 
         // GET: Proveedors/Details/5
