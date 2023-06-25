@@ -19,11 +19,7 @@ namespace soffapp.Controllers
             _context = context;
         }
 
-        public ActionResult Buscar(string nombre)
-        {
-            var proveedor = _context.Proveedors.Where(p => p.Nombre.Contains(nombre)).ToList();
-            return View(proveedor);
-        }
+  
 
         // GET: Proveedors
         public async Task<IActionResult> Index()

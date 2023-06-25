@@ -14,8 +14,8 @@ namespace soffapp.Controllers
             this.context = context;
         }
         public IActionResult Index()
-        {
-            return View();
+        {   
+                return View();   
         }
 
         public async Task<IActionResult> Create(int id)

@@ -21,9 +21,13 @@ namespace soffapp.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-              return _context.Productos != null ? 
-                          View(await _context.Productos.ToListAsync()) :
-                          Problem("Entity set 'SoffDataContext.Productos'  is null.");
+
+           
+            
+               return _context.Productos != null ? 
+                       View(await _context.Productos.ToListAsync()) :
+                       Problem("Entity set 'SoffDataContext.Productos'  is null.");
+            
         }
 
         // GET: Productos/Details/5
