@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using soffapp.Models;
 
@@ -11,9 +12,11 @@ using soffapp.Models;
 namespace soffapp.Migrations
 {
     [DbContext(typeof(SoffDataContext))]
-    partial class SoffDataContextModelSnapshot : ModelSnapshot
+    [Migration("20230624041037_add-migation, ctuaizarBd")]
+    partial class addmigationctuaizarBd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

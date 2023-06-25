@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace soffapp.Models;
 
-public partial class SoffDataContext : DbContext
+public partial class SoffDataContext : IdentityDbContext
 {
     public SoffDataContext()
     {
@@ -276,6 +277,7 @@ public partial class SoffDataContext : DbContext
             entity.Property(e => e.Total)
                 .HasColumnType("decimal(16, 2)")
                 .HasColumnName("total");
+            base.OnModelCreating(modelBuilder);
         });
 
 
