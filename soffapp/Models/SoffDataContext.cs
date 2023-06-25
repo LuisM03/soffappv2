@@ -132,7 +132,7 @@ public partial class SoffDataContext : DbContext
                 .HasColumnName("precio");
             entity.Property(e => e.Stock).HasColumnName("stock");
 
-            entity.HasOne(d => d.IdProveedorNavigation).WithMany(p => p.Insumos)
+            entity.HasOne(d => d.Proveedor).WithMany(p => p.Insumos)
                 .HasForeignKey(d => d.IdProveedor)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__insumo__estado__3B75D760");
