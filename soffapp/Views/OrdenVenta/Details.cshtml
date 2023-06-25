@@ -1,0 +1,39 @@
+﻿
+@{
+    ViewData["Title"] = $"Detalle de venta {ViewBag.IdVenta}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var total = 0;
+}
+@foreach (var orden in ViewBag.Ordenes)
+{
+    total += orden.Total;
+}
+<div class="mt-4 border rounded bg-white">
+    <table class="table mb-0 table-bordered table-striped">
+        <thead>
+            <tr>
+                <td>Id</td>
+                <td>Producto</td>
+                <td>Cantidad</td>
+                <td>Precio</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var orden in ViewBag.Ordenes)
+            {
+                <tr>
+                    <td>@orden.IdOrden</td>
+                    <td>@orden.Nombre</td>
+                    <td>@orden.Cantidad</td>
+                    <td>@orden.PrecioUnitario</td>
+                    <td>@orden.Total</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="alert alert-dark mt-2">
+    Total venta: @ViewBag.TotalVenta
+</div>

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<soffapp.Models.Proveedor>
+@model IEnumerable<soffapp.Models.Proveedor>
 
 @{
     ViewData["Title"] = "Proveedores";
@@ -6,27 +6,30 @@
 }
 
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+<style>
 
-@*-------------------------------Titulo y hora------------------------------*@
-
-
-
+</style>
 
 @*-------------------------------------------------------------*@
-<table class="border w-100 ">
+<table class="border" style="min-width: 1283px;">
     <tr>
 
 
     @*----------------------------------Buscador---------------------------*@
-        <td class="" style="width: 436px; height:45px; ">
-            <input id="buscador" class="w-100  rounded-start" placeholder="Buscar">
+        <td  style="width: 436px; height:45px; ">
+            <input placeholder="Buscar" name="enviar" class="pl-3 pr-3 rounded w-100 h-100 border" >
+
     </td>
     @*--------------------------------Ooicones lugar-----------------------------*@
 
 
-    <td class=" ">
-        <select placeholder="lugar" class="margin-rigth: 30px">
+        <td class="pl-3 " style="width: 176px; height:45px; ">
+        <select class="p-2 h-100 w-100  border rounded">
              
             <option value="opcion1">Opción 1</option>
             <option value="opcion2">Opción 2</option>
@@ -35,13 +38,14 @@
     </td>
 
 
-     <td >
-        <button class="btn btn-outline-primary w-50">
+     <td class="pl-4" >
+            <button style="width: 199px; height:45px; " class="btn btn-outline-primary ">
             Generar Reporte
         </button>
 
     </td>
     @*------------------------------Boton para resgistrar un nuevo proveedor-------------------------------*@
+
 
     <td class="">
       <a class="btn btn-outline-primary w-50" asp-action="Create">Create New</a>
@@ -50,39 +54,46 @@
     </tr>
 </table>
 @*-------------------------------------------------------------*@
-<table class="table border text-muted " style="max-width: 1283px;">
+<table id="tabla" class="table border text-muted  mt-2 rounded" style="min-width: 1283px;">
     <thead>
         <tr class="fs-6">
-            <th>
+
+            <th class="bg-light">
+                @Html.DisplayNameFor(model=> model.IdProveedor)
+            </th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Empresa)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Direccion)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.FechaRegistro)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Correo)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Telefono)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Ciudad)
             </th>
-            <th>
+            <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Estado)
             </th>
-            <th></th>
+            <th class="bg-light">Acciones</th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdProveedor)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>

@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PdfSharp.Drawing;
+using PdfSharp.Pdf;
 using soffapp.Models;
+using System.Diagnostics;
 
 namespace soffapp.Controllers
 {
@@ -59,17 +63,48 @@ namespace soffapp.Controllers
             }
         }
 
+        public IActionResult ReportePDF()
+        {
+            PdfDocument document = new PdfDocument();
+            PdfPage page = document.AddPage();
+            XGraphics gfx = XGraphics.FromPdfPage(page);
+            XFont font = new XFont("Verdana", 20, XFontStyle.Bold);
+
+            gfx.DrawString("Hello, World!", font, XBrushes.Black,
+                new XRect(0, 0, page.Width, page.Height),
+                XStringFormat.Center);
+            string filename = "HelloWorld.pdf";
+            document.Save(filename);
+            return View(document);
+        }
+
         public async Task<IActionResult> Delete(string id) 
         {
-            var venta = await context.Venta.FindAsync(long.Parse(id));
-            if (venta == null)
+            var ventaOrdenes = await context.Venta
+                .Include(v => v.OrdenVenta)
+                .FirstOrDefaultAsync(v => v.IdVenta == long.Parse(id));
+            if (ventaOrdenes == null)
             {
                 return RedirectToAction("Index");
             }
             else
             {
-                context.Venta.Remove(venta);
-                context.SaveChanges();
+                var ordenes = ventaOrdenes.OrdenVenta.ToList();
+                if (ventaOrdenes.OrdenVenta.Count() > 0)
+                {
+                    foreach (var orden in ordenes)
+                    {
+                        context.OrdenVenta.Remove(orden);
+                        context.SaveChanges();
+                    }
+                    context.Venta.Remove(ventaOrdenes);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    context.Venta.Remove(ventaOrdenes);
+                    context.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
         }
