@@ -23,12 +23,11 @@ namespace soffapp.Controllers
             var IdProducto = int.Parse(splitData[splitData.Length - 1]);
             ViewBag.IdProducto = IdProducto;
 
-            ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == IdProducto).Any()).ToList();
+            ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
 
             ViewBag.Insumos = await _context.Insumos.Select(x => new { x.IdInsumo, x.Nombre }).ToListAsync();
             Tuple<DetalleInsumo, Producto, AsociacionProducto> models = new Tuple<DetalleInsumo, Producto, AsociacionProducto>(new DetalleInsumo(), new Producto(), new AsociacionProducto());
             return View(models);
-
         }
         [HttpPost]
         public IActionResult Create([Bind(Prefix = "Item1")] DetalleInsumo detalleInsumo, [Bind(Prefix = "Item2")] Producto producto, [Bind(Prefix = "Item3")] AsociacionProducto asociacionProducto)
@@ -39,11 +38,40 @@ namespace soffapp.Controllers
             _context.Add(new AsociacionProducto() { IdProducto = producto.IdProducto, IdDetalleInsumo = detalleInsumo.IdDetalle });
             _context.SaveChanges();
 
-
             return Redirect($"/DetalleInsumo/Create/{producto.IdProducto}");
-            //            return View(new Tuple<DetalleInsumo, Producto, AsociacionProducto>(detalleInsumo, producto, asociacionProducto));
+        }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            string? _urlData = HttpContext.Request.Path.Value;
+            string[] splitData = _urlData.Split('/');
+            var IdProducto = int.Parse(splitData[splitData.Length - 1]);
+            ViewBag.IdProducto = IdProducto;
+
+            var producto =_context.Productos.FirstOrDefault(p => p.IdProducto == IdProducto);
+
+            ViewBag.NombreProducto = producto.Nombre;
+            ViewBag.PrecioProducto = producto.Precio;
+
+            ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
+
+            ViewBag.Insumos = await _context.Insumos.Select(x => new { x.IdInsumo, x.Nombre }).ToListAsync();
+            Tuple<DetalleInsumo, Producto, AsociacionProducto> models = new Tuple<DetalleInsumo, Producto, AsociacionProducto>(new DetalleInsumo(), new Producto(), new AsociacionProducto());
+            return View(models);
 
         }
+        [HttpPost]
+        public IActionResult Edit([Bind(Prefix = "Item1")] DetalleInsumo detalleInsumo, [Bind(Prefix = "Item2")] Producto producto, [Bind(Prefix = "Item3")] AsociacionProducto asociacionProducto)
+        {
+            var insumo = _context.Insumos.Where(x => x.IdInsumo == detalleInsumo.IdInsumo).FirstOrDefault()!;
+            _context.Update(detalleInsumo);
+            _context.SaveChanges();
+            _context.Update(new AsociacionProducto() { IdProducto = producto.IdProducto, IdDetalleInsumo = detalleInsumo.IdDetalle });
+            _context.SaveChanges();
+
+            return Redirect($"/DetalleInsumo/Edit/{producto.IdProducto}");
+        }
+
         public async Task<IActionResult> Delete(String id, int otroId)
         {
             var orden = await _context.DetalleInsumos.FindAsync(long.Parse(id));
@@ -75,6 +103,24 @@ namespace soffapp.Controllers
             else
             {
                 return View();
+            }
+        }
+
+        public async Task<IActionResult> DeleteEdit(String id, int otroId)
+        {
+            var orden = await _context.DetalleInsumos.FindAsync(long.Parse(id));
+            if (orden == null)
+            {
+                return Redirect($"/DetalleInsumo/Edit/{otroId}");
+            }
+            else
+            {
+                var asociacion = _context.AsociacionProductos.FirstOrDefault(a => a.IdProducto == otroId && a.IdDetalleInsumo == long.Parse(id));
+                if (asociacion != null)
+                    _context.AsociacionProductos.Remove(asociacion);
+                _context.DetalleInsumos.Remove(orden);
+                _context.SaveChanges();
+                return Redirect($"/DetalleInsumo/Edit/{otroId}");
             }
         }
     }

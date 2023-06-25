@@ -6,7 +6,7 @@
 
 <div class="grid row g-4 column-2 py-2">
     <div class="col-8">
-        <form class="row g-2" asp-action="Create" method="post">
+        <form class="row g-2" asp-action="Edit" method="post">
             <input type="hidden" asp-for="Item2.IdProducto" value="@ViewBag.IdProducto" />
             <div class="col-3">
                 <label>Insumo</label>
@@ -29,7 +29,9 @@
                     Agregar detalle
                 </button>
             </div>
+
         </form>
+
         <div class="mt-3 border rounded bg-white">
             <table class="table table-borderless mb-0">
                 <thead>
@@ -43,25 +45,24 @@
                 <tbody>
                     @foreach (var detalle in ViewBag.Detalles)
                     {
-                        <tr>
-                            <td>@detalle.IdInsumoNavigation.Nombre</td>
-                            <td>@detalle.Cantidad</td>
-                            <td>@detalle.Medida</td>
-                            <td class="d-flex align-items-center">
-                                <a href="@Url.Action("Delete", "DetalleInsumo", new { id = detalle.IdDetalle, otroId = ViewBag.IdProducto})" class="btn border py-1 px-2">
-                                    <i class="bi bi-trash3"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>@detalle.IdInsumoNavigation.Nombre</td>
+                                <td>@detalle.Cantidad</td>
+                                <td>@detalle.Medida</td>
+                                <td class="d-flex align-items-center">
+                                        <a href="@Url.Action("DeleteEdit", "DetalleInsumo", new { id = detalle.IdDetalle, otroId = ViewBag.IdProducto})" class="btn border py-1 px-2">
+                                        <i class="bi bi-trash3"></i>
+                                    </a>
+                                </td>
+                            </tr>
                     }
                 </tbody>
             </table>
         </div>
     </div>
 
-
 <div class="col-4 p-2 bg-white rounded border px-4 py-4">
-    <form class="detail-container" asp-action="ConfirmSale" method="post">
+   <form class="detail-container" asp-action="ConfirmSale" method="post">
         <input type="hidden" asp-for="Item2.IdProducto" value="@ViewBag.IdProducto" />
         <div>
             <div class="w-100 d-flex flex-column mb-3 align-items-center">
@@ -70,20 +71,20 @@
                 <p class="mb-0">Diagonal 57 #20-27, Navarra/Bello</p>
                 <p class="mb-0">(+57) 3146486791</p>
             </div>
-            
+
             <hr />
             <div class="">
                 <p class="mb-0"><strong>Nombre</strong></p>
-                <input class="form-control" asp-for="Item2.Nombre"/>
+                <input class="form-control" asp-for="Item2.Nombre" value="@ViewBag.NombreProducto"/>
             </div>
             <div class="">
                 <p class="mb-0"><strong>Precio</strong></p>
-                <input class="form-control" asp-for="Item2.Precio" />
+                <input class="form-control" asp-for="Item2.Precio" value="@ViewBag.PrecioProducto"/>
             </div>
 
         </div>
         <div class="w-100 d-flex flex-column mt-auto">
-            <a class="btn btn-light border mb-2" asp-controller="Productos" asp-action="Delete" asp-route-id="@ViewBag.IdProducto">Cancelar </a>
+            <a class="btn btn-light border mb-2" asp-controller="Productos" asp-action="Index">Cancelar </a>
             <button class="btn btn-primary" type="submit">Guardar</button>
         </div>
     </form>
