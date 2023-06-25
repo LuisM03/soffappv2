@@ -19,18 +19,23 @@ namespace soffapp.Controllers
             _context = context;
         }
 
-        public ActionResult Buscar(string nombre)
-        {
-            var proveedor = _context.Proveedors.Where(p => p.Nombre.Contains(nombre)).ToList();
-            return View(proveedor);
-        }
+  
 
         // GET: Proveedors
         public async Task<IActionResult> Index()
         {
-              return _context.Proveedors != null ? 
-                          View(await _context.Proveedors.ToListAsync()) :
-                          Problem("Entity set 'SoffDataContext.Proveedors'  is null.");
+
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+            else { 
+
+                return _context.Proveedors != null ?
+                            View(await _context.Proveedors.ToListAsync()) :
+                            Problem("Entity set 'SoffDataContext.Proveedors'  is null.");
+                
+            };
         }
 
         // GET: Proveedors/Details/5
@@ -72,6 +77,7 @@ namespace soffapp.Controllers
             }
             return View(proveedor);
         }
+
 
         // GET: Proveedors/Edit/5
         public async Task<IActionResult> Edit(long? id)

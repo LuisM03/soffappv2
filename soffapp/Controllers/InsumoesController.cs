@@ -23,7 +23,7 @@ namespace soffapp.Controllers
 
         public IActionResult Index()
         {
-            List<Insumo> lista = _context.Insumos.Include(c => c.IdProveedorNavigation).ToList();
+            List<Insumo> lista = _context.Insumos.Include(c => c.Proveedor).ToList();
             return View(lista);
         }
 
@@ -36,7 +36,7 @@ namespace soffapp.Controllers
             }
 
             var insumo = await _context.Insumos
-                .Include(i => i.IdProveedorNavigation)
+                .Include(i => i.Proveedor)
                 .FirstOrDefaultAsync(m => m.IdInsumo == id);
             if (insumo == null)
             {
@@ -57,7 +57,7 @@ namespace soffapp.Controllers
         // POST: Insumoes/Create
 
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdInsumo,IdProveedor,Nombre,FechaCaducidad,Stock,Medida,Precio,Estado")] Insumo insumo)
         {
             //if (ModelState.IsValid)
@@ -136,7 +136,7 @@ namespace soffapp.Controllers
             }
 
             var insumo = await _context.Insumos
-                .Include(i => i.IdProveedorNavigation)
+                .Include(i => i.Proveedor)
                 .FirstOrDefaultAsync(m => m.IdInsumo == id);
             if (insumo == null)
             {

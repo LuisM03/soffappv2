@@ -24,6 +24,7 @@ namespace soffapp.Controllers
             return _context.Productos != null ?
                         View(await _context.Productos.ToListAsync()):
                         Problem("Entity set 'SoffDataContext.Productos'  is null.");
+
         }
 
         public async Task<IActionResult> Details()
