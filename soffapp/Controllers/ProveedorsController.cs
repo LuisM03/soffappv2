@@ -78,6 +78,7 @@ namespace soffapp.Controllers
             return View(proveedor);
         }
 
+
         // GET: Proveedors/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {

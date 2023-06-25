@@ -170,7 +170,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link text-white">
+                            <a asp-area="" asp-controller="Compras" asp-action="Index" class="nav-link text-white">
                                 <i class="bi bi-handbag-fill nav-icon"></i>
                                 <p class="ml-1">Compras</p>
                             </a>
@@ -217,7 +217,7 @@
                     <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
                 }
                 @RenderBody()
-                @RenderSection("scripts", required: false)
+                @*@RenderSection("scripts", required: false)*@
             </section>
             <!-- /.content -->
         </div>
@@ -241,6 +241,7 @@
     <!-- AdminLTE App -->
     <script src="~/adminlte/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
+
     <script src="~/adminlte/dist/js/demo.js"></script>
 </body>
 </html>

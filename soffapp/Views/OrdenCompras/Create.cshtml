@@ -1,6 +1,6 @@
-﻿@model Tuple<OrdenVentum, Ventum>;
+﻿@model Tuple<OrdenCompra, Compra>;
 @{
-    ViewData["Title"] = "Ventas";
+    ViewData["Title"] = "Compras";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -10,7 +10,7 @@
     {
         total += detalle.Total;
     }
-    
+
 }
 
 
@@ -18,19 +18,19 @@
     <div class="col-8">
         <form class="row g-2" asp-action="Create" method="post">
             <div class="col-4">
-                <label>Producto</label>
-                <select class="form-control form-select" asp-for="Item1.IdProducto" aria-label="Default select example" asp-items="@(new SelectList(ViewBag.Productos, "IdProducto", "Nombre"))">
+                <label>Insumo</label>
+                <select class="form-control form-select" asp-for="Item1.IdInsumo" aria-label="Default select example" asp-items="@(new SelectList(ViewBag.Insumos, "IdInsumo", "Nombre"))">
                     <option>Seleccione</option>
                 </select>
             </div>
             <div class="col-4">
                 <label>Cantidad</label>
-                <input type="number" asp-for="Item1.Cantidad" placeholder="Cantidad de producto" class="form-control" />
+                <input type="number" asp-for="Item1.Cantidad" placeholder="Cantidad de insumo" class="form-control" />
             </div>
-            <input type="hidden" asp-for="Item1.IdVenta" value="@ViewBag.IdVenta" />
+            <input type="hidden" asp-for="Item1.IdCompra" value="@ViewBag.IdCompra" />
             <div class="col-4 d-flex align-items-end justify-content-end">
                 <button class="btn btn-primary" type="submit">
-                    Agregar producto
+                    Agregar insumo
                 </button>
             </div>
         </form>
@@ -38,7 +38,7 @@
             <table class="table table-borderless mb-0">
                 <thead>
                     <tr class="text-gray bg-gray-300">
-                        <th>Producto</th>
+                        <th>Insumo</th>
                         <th>Cantidad</th>
                         <th>Precio</th>
                         <th>Total</th>
@@ -54,7 +54,7 @@
                             <td>@detalle.PrecioUnitario</td>
                             <td>@detalle.Total</td>
                             <td class="d-flex align-items-center">
-                                <a href="@Url.Action("Delete", "OrdenVenta", new { id = detalle.IdOrden, otroId = detalle.IdVenta})" class="btn border py-1 px-2">
+                                <a href="@Url.Action("Delete", "OrdenCompras", new { id = detalle.IdOrden, otroId = detalle.IdCompra})" class="btn border py-1 px-2">
                                     <i class="bi bi-trash3"></i>
                                 </a>
                             </td>
@@ -67,7 +67,7 @@
     <div class="col-4 p-2 bg-white rounded border px-4 py-4">
 
         <form class="detail-container" asp-action="ConfirmSale" method="post">
-            <input type="hidden" asp-for="Item2.IdVenta" value="@ViewBag.IdVenta" />
+            <input type="hidden" asp-for="Item2.IdCompra" value="@ViewBag.IdCompra" />
             <div>
                 <div class="w-100 d-flex flex-column mb-3 align-items-center">
                     <p class="w-100 h4 mb-3 text-center"><strong>MANDISA</strong></p>
@@ -86,24 +86,16 @@
                 </div>
                 <hr />
                 <div class="">
-                    <p class="mb-0"><strong>Método de pago</strong></p>
-                    <select class="form-control" asp-for="Item2.Metodo">
-                        <option value="efectivo">Efectivo</option>
-                        <option value="transferencia">Transferencia</option>
-                    </select>
-                </div>
-                <div class="">
-                    <p class="mb-0"><strong>Tipo de venta</strong></p>
-                    <select class="form-control" asp-for="Item2.TipoVenta">
-                        <option value="fisica">Física</option>
-                        <option value="virtual">Virtual</option>
+                    <p class="mb-0"><strong>Proveedor</strong></p>
+                    <select class="form-control form-select" asp-for="Item2.IdProveedor" asp-items="@(new SelectList(ViewBag.Proveedores, "IdProveedor", "Nombre"))">
+                        <option>Seleccione</option>
                     </select>
                 </div>
                 <input type="hidden" asp-for="Item2.Total" value="@total" />
             </div>
             <div class="w-100 d-flex flex-column mt-auto">
-                <a class="btn btn-light border mb-2" asp-controller="Ventas" asp-action="Delete" asp-route-id="@ViewBag.IdVenta">Cancelar venta</a>
-                <button class="btn btn-primary" type="submit">Realizar venta</button>
+                <a class="btn btn-light border mb-2" asp-controller="Compras" asp-action="Delete" asp-route-id="@ViewBag.IdCompra">Cancelar compra</a>
+                <button class="btn btn-primary" type="submit">Realizar compra</button>
             </div>
         </form>
     </div>

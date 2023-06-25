@@ -47,8 +47,40 @@ namespace soffapp.Controllers
             return View(models);
         }
 
+        public async Task<IActionResult> Details()
+        {
+            string? _urlData = HttpContext.Request.Path.Value;
+            string[] splitData = _urlData.Split('/');
+            var IdVenta = int.Parse(splitData[splitData.Length - 1]);
+
+            var Ordenes = context.OrdenVenta
+                .Where(o => o.IdVenta == IdVenta)
+                .Join(
+                    context.Productos,
+                    orden => orden.IdProducto,
+                    producto => producto.IdProducto,
+                    (orden, producto) => new
+                    {
+                        producto.Nombre,
+                        orden.Cantidad,
+                        orden.PrecioUnitario,
+                        orden.Total,
+                        orden.IdOrden,
+                        orden.IdVenta
+                    }).ToList();
+            var venta = context.Venta.Where(o => o.IdVenta == IdVenta).Select(x => new {x.IdVenta, x.TipoVenta, x.FechaVenta, x.Total}).ToList();
+            ViewBag.Ordenes = Ordenes;
+            ViewBag.IdVenta = IdVenta;
+            foreach (var item in venta)
+            {
+                ViewBag.TotalVenta = item.Total;
+            }
+            
+            return View();
+        }
+
         [HttpPost]
-        public IActionResult Create([Bind(Prefix = "Item1")] OrdenVentum ordenVenta, [Bind(Prefix = "Item2")] Ventum venta)
+        public IActionResult Create([Bind(Prefix = "Item1")] OrdenVentum ordenVenta, [Bind(Prefix = "Item2")] Ventum venta, AsociacionProducto asociacion)
         {
             var producto = context.Productos.Where(x => x.IdProducto == ordenVenta.IdProducto).FirstOrDefault()!;
             ordenVenta.PrecioUnitario = producto.Precio;

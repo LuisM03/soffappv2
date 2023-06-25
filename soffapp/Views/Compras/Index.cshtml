@@ -1,21 +1,21 @@
-﻿@model soffapp.Models.Ventum;
+﻿@model soffapp.Models.Compra;
 @{
-    ViewData["Title"] = "Ventas";
+    ViewData["Title"] = "Compras";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div>
     <div class="w-100 row m-0">
-        
+
         <div class="col-2 p-0">
-            <a asp-controller="Ventas" asp-action="ReportePDF" class="btn btn-dark">
+            <a asp-controller="Compras" asp-action="ReportePDF" class="btn btn-dark">
                 Gestionar reporte
             </a>
         </div>
         <div class="col-10 px-0 d-flex align-items-center justify-content-end">
             <form method="post" asp-action="Create">
                 <button type="submit" class="btn btn-primary">
-                    Agregar venta
+                    Agregar compra
                 </button>
             </form>
         </div>
@@ -28,25 +28,23 @@
             <tr>
                 <td>Id</td>
                 <td>Fecha</td>
-                <td>Tipo Venta</td>
-                <td>Metodo</td>
+                <td>Proveedor</td>
                 <td>Cantidad Ordenes</td>
                 <td>Total</td>
                 <td>Acciones</td>
             </tr>
         </thead>
         <tbody>
-            @foreach(var venta in ViewBag.Ventas)
+            @foreach (var compra in ViewBag.Compras)
             {
                 <tr>
-                    <td>@venta.IdVenta</td>
-                    <td>@venta.FechaVenta</td>
-                    <td>@venta.TipoVenta</td>
-                    <td>@venta.Metodo</td>
-                    <td>@venta.CantidadOrdenes</td>
-                    <td>@venta.Total</td>
+                    <td>@compra.IdCompra</td>
+                    <td>@compra.FechaCompra</td>
+                    <td>@compra.Nombre</td>
+                    <td>@compra.CantidadOrdenes</td>
+                    <td>@compra.Total</td>
                     <td>
-                        <a asp-controller="OrdenVenta" asp-action="Details" asp-route-id="@venta.IdVenta" class="btn border rounded">
+                        <a asp-controller="OrdenCompras" asp-action="Details" asp-route-id="@compra.IdCompra" class="btn border rounded">
                             <i class="bi bi-file-zip"></i>
                         </a>
                     </td>
