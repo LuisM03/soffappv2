@@ -35,7 +35,7 @@ namespace soffapp.Controllers
                             View(await _context.Proveedors.ToListAsync()) :
                             Problem("Entity set 'SoffDataContext.Proveedors'  is null.");
                 
-            };
+            }
         }
 
         // GET: Proveedors/Details/5
