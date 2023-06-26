@@ -23,8 +23,15 @@ namespace soffapp.Controllers
 
         public IActionResult Index()
         {
-            List<Insumo> lista = _context.Insumos.Include(c => c.Proveedor).ToList();
-            return View(lista);
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+            else
+            {
+                List<Insumo> lista = _context.Insumos.Include(c => c.Proveedor).ToList();
+                return View(lista);
+            }
         }
 
         // GET: Insumoes/Details/5
