@@ -12,22 +12,22 @@ public partial class Insumo
 
     public long IdProveedor { get; set; }
 
-    [Required]
-    public string Nombre { get; set; } = null!;
+    [Required(ErrorMessage = "El nombre es requerido")]
+    public required string Nombre { get; set; }
 
     [DataType(DataType.Date)]
     public DateTime FechaCaducidad { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "El Stock es requerido")]
     public int Stock { get; set; }
 
-    [Required]
-    public string Medida { get; set; } = null!;
+    [Required(ErrorMessage = "El Medida es requerido")]
+    public string Medida { get; set; }
 
-    [Required]
+    [Required(ErrorMessage = "El Precio es requerido")]
     public decimal Precio { get; set; }
-    
 
+    [Required(ErrorMessage = "El estado es requerido")]
     public bool? Estado { get; set; }
 
     public virtual ICollection<DetalleInsumo> DetalleInsumos { get; set; } = new List<DetalleInsumo>();
