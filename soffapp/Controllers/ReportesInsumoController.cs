@@ -24,13 +24,11 @@ public class ReportesInsumoController : Controller
         //else
         //{
 
-            var insumos = _context.Insumos.ToList();
-            //var productos = _context.Productos.ToList();
-            //var ventas = _context.Ventas.ToList();
+        var insumos = _context.Insumos.ToList();
+
 
             ViewData["Insumos"] = insumos;
-            //ViewData["Productos"] = productos;
-            //ViewData["Ventas"] = ventas;
+
 
             return View();
         //}
