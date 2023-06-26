@@ -207,7 +207,7 @@
             <!-- Content Header (Page header) -->
             <!-- Main content -->
             <section class="container mx-auto">
-                @if (!User.Identity.IsAuthenticated)
+                @if (User.Identity.IsAuthenticated)
                 {
                     <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
                 }
