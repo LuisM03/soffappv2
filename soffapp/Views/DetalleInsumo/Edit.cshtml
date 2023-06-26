@@ -16,11 +16,11 @@
             </div>
             <div class="col-2">
                 <label>Cantidad</label>
-                <input type="number" asp-for="Item1.Cantidad" class="form-control" />
+                <input type="number" asp-for="Item1.Cantidad" placeholder="Cantidad de insumo" class="form-control" />
             </div>
             <div class="col-2">
                 <label>Medida</label>
-                <input type="text" asp-for="Item1.Medida" class="form-control" />
+                <input type="text" asp-for="Item1.Medida" placeholder="Unidad de medida" class="form-control" />
             </div>
             <input type="hidden" asp-for="Item1.IdInsumo" value="@ViewBag.IdInsumo" />
 
@@ -75,11 +75,11 @@
             <hr />
             <div class="">
                 <p class="mb-0"><strong>Nombre</strong></p>
-                <input class="form-control" asp-for="Item2.Nombre" value="@ViewBag.NombreProducto"/>
+                <input class="form-control" placeholder="Nombre del producto" asp-for="Item2.Nombre" value="@ViewBag.NombreProducto"/>
             </div>
             <div class="">
                 <p class="mb-0"><strong>Precio</strong></p>
-                <input class="form-control" asp-for="Item2.Precio" value="@ViewBag.PrecioProducto"/>
+                <input class="form-control" placeholder="Precio del producto" asp-for="Item2.Precio" value="@ViewBag.PrecioProducto"/>
             </div>
 
         </div>
