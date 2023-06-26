@@ -11,9 +11,9 @@ namespace soffapp.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK__detalle_i__estad__412EB0B6",
-                table: "detalle_insumo");
+            //migrationBuilder.DropForeignKey(
+            //    name: "FK__detalle_i__estad__412EB0B6",
+            //    table: "detalle_insumo");
 
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",

@@ -86,16 +86,16 @@ namespace soffapp.Controllers
         public IActionResult Index()
         {
 
-            //if (!User.Identity.IsAuthenticated)
-            //{
-            //    return RedirectToAction("./Areas/Identity/Pages/Account/Login");
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/Identity/Account/Login");
 
-            //}
-            //else
-            //{
+            }
+            else
+            {
                 return View();
 
-            //}
+            }
 
         }
 
