@@ -6,13 +6,47 @@
 }
 
 
+<div>
+    <div class="w-100 row">
+        <td class="">
+            <a class="btn btn-outline-primary w-20" asp-action="Create" asp-controller="Insumoes">Agregar Insumo</a>
+        </td>
+
+        
+        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
+            <div class="col-2">
+                <a class="btn btn-dark" asp-controller="ReportesInsumo" asp-action="Index">
+                Reporte
+            </a>
+        </div>
+        
+        </div>
+    </div>
+</div>
+
+@*<div>
+    <div class="w-100 row">
+
+        <div class="col-2">
+            <button class="btn btn-dark">
+                Gestionar reporte
+            </button>
+        </div>
+        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
+            <form method="post" asp-action="Create" asp-controller="Insumoes">
+                <button type="submit" class="btn btn-primary">
+                    Agregar producto
+                </button>
+            </form>
+        </div>
+    </div>
+</div>*@
 
 
-    <td class="">
-        <a class="btn btn-outline-primary w-30" asp-action="Create" asp-controller="Insumoes">Agregar Insumo</a>
-    </td>
+<div class="mt-4 border rounded bg-white">
 
-<table class="table">
+
+<table class="table mb-0 table-bordered table-striped">
     <thead>
         <tr>
             <th>
@@ -87,3 +121,5 @@
 }
     </tbody>
 </table>
+
+</div>
