@@ -21,142 +21,79 @@ namespace soffapp.Controllers
         // GET: Productos
         public async Task<IActionResult> Index()
         {
-              return _context.Productos != null ? 
-                          View(await _context.Productos.ToListAsync()) :
-                          Problem("Entity set 'SoffDataContext.Productos'  is null.");
+            return _context.Productos != null ?
+                        View(await _context.Productos.ToListAsync()):
+                        Problem("Entity set 'SoffDataContext.Productos'  is null.");
+
         }
 
-        // GET: Productos/Details/5
-        public async Task<IActionResult> Details(long? id)
+        public async Task<IActionResult> Details()
         {
-            if (id == null || _context.Productos == null)
-            {
-                return NotFound();
-            }
+            string? _urlData = HttpContext.Request.Path.Value;
+            string[] splitData = _urlData.Split('/');
+            var IdProducto = int.Parse(splitData[splitData.Length - 1]);
+            ViewBag.IdProducto = IdProducto;
 
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.IdProducto == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
+            ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == IdProducto).Any()).Select(x => new { x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation}).ToList();
 
-            return View(producto);
-        }
-
-        // GET: Productos/Create
-        public IActionResult Create()
-        {
             return View();
         }
-
-        // POST: Productos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdProducto,Nombre,Precio,Estado")] Producto producto)
+        public async Task<IActionResult> Create(Producto producto)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(producto);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(producto);
+            producto.Nombre = "";
+            producto.Precio = 0;
+            producto.Estado = true;
+            _context.Add(producto);
+            await _context.SaveChangesAsync();
+
+            return Redirect($"/DetalleInsumo/Create/{producto.IdProducto}");
         }
-
-        // GET: Productos/Edit/5
-        public async Task<IActionResult> Edit(long? id)
+        public async Task<IActionResult> Delete(string id)
         {
-            if (id == null || _context.Productos == null)
+            var productoDetalles = await _context.Productos
+                .Include(v => v.OrdenVenta).Include(a=> a.AsociacionProductos)
+                .FirstOrDefaultAsync(v => v.IdProducto == long.Parse(id));
+            if (productoDetalles == null)
             {
-                return NotFound();
+                return RedirectToAction("Index");
             }
-
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto == null)
+            else
             {
-                return NotFound();
-            }
-            return View(producto);
-        }
-
-        // POST: Productos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long id, [Bind("IdProducto,Nombre,Precio,Estado")] Producto producto)
-        {
-            if (id != producto.IdProducto)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                var detalles = productoDetalles.OrdenVenta.ToList();
+                if (productoDetalles.OrdenVenta.Count() > 0)
                 {
-                    _context.Update(producto);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductoExists(producto.IdProducto))
+                    foreach (var detalle in detalles)
                     {
-                        return NotFound();
+                        _context.OrdenVenta.Remove(detalle);
+                        _context.SaveChanges();
+                    }
+                    _context.Productos.Remove(productoDetalles);
+                    _context.SaveChanges();
+                }
+                else
+                {
+                    var detallesAsociacion = productoDetalles.AsociacionProductos.ToList();
+                    if (productoDetalles.AsociacionProductos.Count() > 0)
+                    {
+                        foreach (var detalle in detallesAsociacion)
+                        {
+                            _context.AsociacionProductos.Remove(detalle);
+                            _context.SaveChanges();
+                        }
+                        _context.Productos.Remove(productoDetalles);
+                        _context.SaveChanges();
                     }
                     else
                     {
-                        throw;
+                        _context.Productos.Remove(productoDetalles);
+                        _context.SaveChanges();
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(producto);
-        }
 
-        // GET: Productos/Delete/5
-        public async Task<IActionResult> Delete(long? id)
-        {
-            if (id == null || _context.Productos == null)
-            {
-                return NotFound();
             }
-
-            var producto = await _context.Productos
-                .FirstOrDefaultAsync(m => m.IdProducto == id);
-            if (producto == null)
-            {
-                return NotFound();
-            }
-
-            return View(producto);
-        }
-
-        // POST: Productos/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(long id)
-        {
-            if (_context.Productos == null)
-            {
-                return Problem("Entity set 'SoffDataContext.Productos'  is null.");
-            }
-            var producto = await _context.Productos.FindAsync(id);
-            if (producto != null)
-            {
-                _context.Productos.Remove(producto);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool ProductoExists(long id)
-        {
-          return (_context.Productos?.Any(e => e.IdProducto == id)).GetValueOrDefault();
+            return RedirectToAction("Index");
         }
     }
 }

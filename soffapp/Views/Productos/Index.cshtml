@@ -1,26 +1,37 @@
 ﻿@model IEnumerable<soffapp.Models.Producto>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Productos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<div>
+    <div class="w-100 row">
+
+        <div class="col-2">
+            <button class="btn btn-dark">
+                Gestionar reporte
+            </button>
+        </div>
+        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
+            <form method="post" asp-action="Create">
+                <button type="submit" class="btn btn-primary">
+                    Agregar producto
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="mt-4 border rounded bg-white">
+
+
+    <table class="table mb-0 table-bordered table-striped">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Precio)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Estado)
-            </th>
-            <th></th>
+            <tr>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Estado</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -36,11 +47,18 @@
                 @Html.DisplayFor(modelItem => item.Estado)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.IdProducto">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdProducto">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.IdProducto">Delete</a>
+                <a asp-controller="DetalleInsumo" asp-action="Edit" asp-route-id="@item.IdProducto" class="btn border rounded">
+                    <i class="bi bi-pencil-square"></i>
+                </a> 
+                    <a asp-action="Details" asp-route-id="@item.IdProducto" class="btn border rounded">
+                    <i class="bi bi-file-zip"></i>
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.IdProducto" class="btn border rounded">
+                    <i class="bi bi-trash3"></i>
+                </a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+</div>

@@ -48,9 +48,23 @@
 
     </style>
 </head>
+
+@{
+    var classContent = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        classContent = "content-wrapper";
+    }
+    else
+    {
+        classContent = "vh-100";
+    };
+}
+
 <body class="hold-transition sidebar-mini">
     <!-- Site wrapper -->
     <div class="wrapper">
+        @if (User.Identity.IsAuthenticated){
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
             <!-- Left navbar links -->
@@ -115,14 +129,21 @@
                         <a href="#" class="dropdown-item d-flex align-items-center">
                             <i class="bi bi-door-open-fill mr-2"></i> <p>Cerrar sesión</p>
                         </a>
+
+                        
+                            <partial name="_LoginPartial"/>
+                       
                     </div>
                 </li>
             </ul>
         </nav>
+        }
         <!-- /.navbar -->
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-no-expand  sidebar-dark-primary side">
-            <!-- Brand Logo -->
+        @if (User.Identity.IsAuthenticated)
+        {
+            <aside class="main-sidebar sidebar-no-expand  sidebar-dark-primary side">
+                <!-- Brand Logo -->
             <a href="../../index3.html" class="brand-link border-0 d-flex align-items-center">
                 <img src="../../img/logo.png" alt="SOFF logo" class="brand-image">
                 <span class="brand-text d-flex flex-column text-white">
@@ -184,15 +205,19 @@
             </div>
             <!-- /.sidebar -->
         </aside>
-
+        }
         <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
+
+        <div class="@classContent">
             <!-- Content Header (Page header) -->
             <!-- Main content -->
             <section class="container mx-auto">
-                <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <p class="py-3 fw-bolder text-lg">@ViewData["Title"]</p>
+                }
                 @RenderBody()
-                @RenderSection("scripts", required: false)
+                @*@RenderSection("scripts", required: false)*@
             </section>
             <!-- /.content -->
         </div>
@@ -216,6 +241,7 @@
     <!-- AdminLTE App -->
     <script src="~/adminlte/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
+
     <script src="~/adminlte/dist/js/demo.js"></script>
 </body>
 </html>

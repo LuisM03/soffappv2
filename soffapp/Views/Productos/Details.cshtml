@@ -1,37 +1,33 @@
-﻿@model soffapp.Models.Producto
+﻿
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Detalle productos";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<div class="mt-4 border rounded bg-white">
+    <table class="table mb-0 table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad</th>
+                <th>Medida</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var detalle in ViewBag.Detalles)
+            {
+                <tr>
+                    <td>@detalle.IdInsumoNavigation.Nombre</td>
+                    <td>@detalle.Cantidad</td>
+                    <td>@detalle.Medida</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 
-<div>
-    <h4>Producto</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-    </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.IdProducto">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+   <div class="d-flex justify-content-center pt-3">
+    <a class="btn btn-dark " asp-action="Index">Volver</a>
 </div>
+
