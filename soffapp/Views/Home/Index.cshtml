@@ -6,16 +6,16 @@
     <div class="col-sm-6">
 
         <div class="card">
-            <div class="card-header">Producto mas vendido</div>
+            <div class="card-header">Productos mayor vendidos</div>
             <div class="card-body">
-                <canvas id="chartVentas" style="max-height:180px"></canvas>
+                <canvas id="chartVentas" style="max-height:250px"></canvas>
             </div>
         </div>
 
 
 
         <div class="card">
-            <div class="card-header">Productos mayor vendidos</div>
+            <div class="card-header">Cantidad mas vendida</div>
             <div class="card-body">
                 <canvas id="chartProductos" style="max-height:250px"></canvas>
             </div>
@@ -31,29 +31,29 @@
 
         function resumenProducto() {
             fetch("Home/resumenProducto")
-            .then((response) =>{
-                return response.ok? response.json() : Promise.reject(response);
-            })
-            .then((dataJson) => {
-                console.log(dataJson)
+                .then((response) => {
+                    return response.ok ? response.json() : Promise.reject(response);
+                })
+                .then((dataJson) => {
+                    console.log(dataJson)
 
-                    const labels = dataJson.map((item) => { return item.total})
+                    const labels = dataJson.map((item) => { return item.total })
                     const values = dataJson.map((item) => { return item.cantidad })
 
 
                     //console.log(labels)
                     //console.log(values)
-                    
+
                     const data = {
                         labels: labels,
                         datasets: [{
                             label: 'cantidad',
                             data: values,
                             backgroundColor:
-                                'rgba(255, 99, 132, 0.2)',
-                                
-                            
-                            
+                                'rgba(54, 162, 235, 0.2)',
+
+
+
                             borderWidth: 1
                         }]
                     };
@@ -72,12 +72,12 @@
 
                     const canvasBarras = document.getElementById("chartProductos");
 
-                    const graficoBarras = new Chart(canvasBarras,config)
+                    const graficoBarras = new Chart(canvasBarras, config)
 
 
-            }).catch((error) => {
-                console.log("error")
-            })
+                }).catch((error) => {
+                    console.log("error")
+                })
         }
 
         function resumenVenta() {
@@ -88,42 +88,75 @@
                 .then((dataJson) => {
                     console.log(dataJson)
 
-                    const labels = dataJson.map((item) => { return item.nombre })
-                    const values = dataJson.map((item) => { return item.cantidad })
-                    
+                    dataJson.nombre
+                    dataJson.cantidadVecesVendida
+
+                    //const labels2 = dataJson.map((item) => {
+                    //    return item.nombre
+                    //})
+
+                    //const values2 = dataJson.map((item) => { return item.cantidadVecesVendida })
+                    //const values2 = dataJson.map((item)
 
 
-                    console.log(labels)
-                    console.log(values)
+                    //console.log(labels2)
+                    //console.log(values2)
+
+                    //const data = {
+                    //    labels: labels,
+                    //    datasets: [{
+                    //        label: 'Producto mas vendido',
+                    //        data: values,
+                    //        backgroundColor: [
+                    //            'rgb(255, 99, 132)',
+
+                    //        ],
+
+                    //    }]
+                    //};
+
 
                     const data = {
-                        labels: labels,
+                        labels: [dataJson.nombre]
+                        ,
                         datasets: [{
-                            label: 'Producto mas vendido',
-                            data: values,
-                            backgroundColor: [
-                                'rgb(255, 99, 132)',
-                                
-                            ],
-                            
+                            type: 'bar',
+                            label: 'Bar Dataset',
+                            data: [dataJson.cantidadVecesVendida],
+                            borderColor: 'rgb(255, 99, 132)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)'
+                        }, {
+
                         }]
                     };
 
 
 
-                    const config = {
-                        type: 'doughnut',
+
+
+                    const config2 = {
+                        type: 'scatter',
                         data: data,
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
                     };
-                    
+
+
+
+
 
                     const canvasdona = document.getElementById("chartVentas");
 
-                    const graficodona = new Chart(canvasdona, config)
+                    const graficodona = new Chart(canvasdona, config2)
 
 
                 }).catch((error) => {
-                    console.log("error")
+                    //console.log("error")
                 })
         }
 
@@ -132,7 +165,7 @@
 
 
 
-        $(document).ready(()=>{
+        $(document).ready(() => {
             resumenProducto()
             resumenVenta()
         })

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Humanizer;
+using Microsoft.AspNetCore.Mvc;
 using soffapp.Models;
 using soffapp.Models.ViewModels;
 using System.Diagnostics;
@@ -14,68 +15,52 @@ namespace soffapp.Controllers
         }
 
 
-        //public IActionResult resumenVenta()
-        //{
-        //    DateTime FechaInicio = DateTime.Now;
-        //    FechaInicio = FechaInicio.AddDays(-5);
-
-        //    List<VMVenta> Lista = (from tbventa in _dbcontext.Venta
-        //                           where tbventa.FechaVenta.Date >= FechaInicio.Date
-        //                           group tbventa by tbventa.FechaVenta.Date into grupo
-        //                           select new VMVenta
-
-        //                           {
-        //                               fecha = grupo.Key.ToString("dd/MM/yyyy"),
-        //                               cantidad = grupo.Count(),
-        //                           }).ToList();
-
-        //    return StatusCode(StatusCodes.Status200OK, Lista);
-        //}
-
-        //public IActionResult resumenVenta()
-        //{
-        //    List<VMVenta> Lista = (from tbventa in _dbcontext.OrdenVenta
-        //                 join venta in _dbcontext.Venta on tbventa.IdOrden equals venta.IdVenta
-        //                           group tbventa by tbventa.Cantidad into grupo
-        //                           select new VMVenta
-        //                 {
-        //                     fecha_venta = venta.FechaVenta,
-        //                               cantidad =  grupo.Count(),
-        //                 }).ToList();
-
-        //    return StatusCode(StatusCodes.Status200OK, Lista);
-        //}
-
-
         public IActionResult resumenVenta()
         {
 
-            List<VMVenta> Lista = (from tbventa in _dbcontext.Productos
 
-                                   group tbventa by tbventa.Nombre into grupo
-                                   orderby grupo.Count() descending
-                                   select new VMVenta
-                                   {
-                                       nombre = grupo.Key,
+            DateTime fechaActual = DateTime.Now;
+            DateTime fechaHace7Dias = fechaActual.AddDays(-7);
 
-                                       precio = grupo.Count(),
-                                   }).ToList();
 
-            return StatusCode(StatusCodes.Status200OK, Lista);
+            var productoMasVendido = _dbcontext.Productos
+                  .Join(
+                      _dbcontext.OrdenVenta.Where(ov => ov.IdVentaNavigation.FechaVenta >= fechaHace7Dias && ov.IdVentaNavigation.FechaVenta <= fechaActual),
+                      producto => producto.IdProducto,
+                      ordenVenta => ordenVenta.IdProducto,
+                      (producto, ordenVenta) => new
+                      {
+                          Producto = producto,
+                          Cantidad = ordenVenta.Cantidad
+                      })
+                  .GroupBy(p => p.Producto)
+                  .OrderByDescending(group => group.Sum(p => p.Cantidad))
+                  .Select(group => new {
+                      group.Key.Nombre,
+                      CantidadVecesVendida = group.Sum(p => p.Cantidad),
+                  })
+                  .FirstOrDefault();
+
+
+            ViewBag.Fecha = fechaHace7Dias.ToString();
+            ViewBag.ProductoMasVendido = productoMasVendido;
+            return StatusCode(StatusCodes.Status200OK, productoMasVendido);
         }
+
+
 
         public IActionResult resumenProducto()
         {
-            
+
             List<VMProducto> Lista = (from tbdetalleventa in _dbcontext.OrdenVenta
-                                   
-                                   group tbdetalleventa by tbdetalleventa.Total into grupo
-                                   orderby grupo.Count() descending
-                                   select new VMProducto
-                                   {
-                                       Cantidad = grupo.Key,
-                                       total = grupo.Count(),
-                                   }).ToList();
+
+                                      group tbdetalleventa by tbdetalleventa.Total into grupo
+                                      orderby grupo.Count() descending
+                                      select new VMProducto
+                                      {
+                                          Cantidad = grupo.Key,
+                                          total = grupo.Count(),
+                                      }).ToList();
 
             return StatusCode(StatusCodes.Status200OK, Lista);
         }
