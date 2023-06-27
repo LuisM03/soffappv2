@@ -1,14 +1,13 @@
 ﻿@model soffapp.Models.Proveedor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Detalles</h1>
 
 <div>
-    <h4>Proveedor</h4>
+    <h4>Detalle Proveedor</h4>
 
     <div class="mt-4 border rounded bg-white">
         <table class="table mb-0 table-bordered table-striped">
@@ -96,7 +95,10 @@
     </table>
 
 </div>
-<a class="btn btn-success text-white mt-2 p-2" asp-action="Index">Volver</a>
+    <div class="w-100  d-flex justify-content-center align-items-center">
+        <a class="text-white btn btn-dark  mt-2 p-2" asp-action="Index">Volver</a>
+
+    </div>
 </div>
 
 
