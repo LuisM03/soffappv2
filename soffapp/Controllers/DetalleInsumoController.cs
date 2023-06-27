@@ -14,7 +14,14 @@ namespace soffapp.Controllers
         }
         public IActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }
+            else
+            {
+                return View();
+            }
         }
         public async Task<IActionResult> Create(int id)
         {
