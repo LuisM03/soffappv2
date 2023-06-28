@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using soffapp.Models;
+using soffapp.Models.ViewModels;
 
 namespace soffapp.Controllers
 {
@@ -96,7 +97,7 @@ namespace soffapp.Controllers
                     return Redirect($"/DetalleInsumo/Create/{otroId}");
             }
         }
-        public IActionResult ConfirmSale([Bind(Prefix = "Item2")] Producto producto)
+        public async Task<IActionResult> ConfirmSale([Bind(Prefix = "Item1")] DetalleInsumo detalleInsumo, [Bind(Prefix = "Item2")] Producto producto, [Bind(Prefix = "Item3")] AsociacionProducto asociacionProducto)
         {
             if (ModelState.IsValid)
             {
@@ -109,7 +110,14 @@ namespace soffapp.Controllers
             }
             else
             {
-                return View();
+                ViewBag.NombreProducto = producto.Nombre;
+                ViewBag.PrecioProducto = producto.Precio;
+
+                ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == producto.IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
+
+                ViewBag.Insumos = await _context.Insumos.Select(x => new { x.IdInsumo, x.Nombre }).ToListAsync();
+                var model = new Tuple<DetalleInsumo, Producto, AsociacionProducto>(detalleInsumo, producto, asociacionProducto);
+                return View($"Create", model);
             }
         }
 
