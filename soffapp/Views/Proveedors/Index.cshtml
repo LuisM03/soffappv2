@@ -15,19 +15,9 @@
 
 </style>
 
-<div class="">
-    <div class="w-100 row">
-        <div class="col-2">
-            
-            <a class="btn btn-primary" asp-action="Create">Registrar Proveedor</a>
-
-        </div>
-        <div class="col-10 px-0 d-flex align-items-center justify-content-end">
-
-
-        </div>
-
-    </div>
+<div class="w-100 d-flex justify-content-end align-items-center">
+   
+      <a class="btn btn-primary" asp-action="Create">Registrar Proveedor</a>
 </div>
 
 
@@ -36,7 +26,7 @@
         <tr class="fs-6">
 
             <th class="bg-light">
-                @Html.DisplayNameFor(model=> model.IdProveedor)
+                ID
             </th>
             <th class="bg-light">
                 @Html.DisplayNameFor(model => model.Nombre)
