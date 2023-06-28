@@ -80,15 +80,26 @@ namespace soffapp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create([Bind(Prefix = "Item1")] OrdenVentum ordenVenta, [Bind(Prefix = "Item2")] Ventum venta, AsociacionProducto asociacion)
         {
-            var producto = context.Productos.Where(x => x.IdProducto == ordenVenta.IdProducto).FirstOrDefault()!;
-            ordenVenta.PrecioUnitario = producto.Precio;
-            ordenVenta.Total = producto.Precio * ordenVenta.Cantidad;
-            context.Add(ordenVenta);
-            context.SaveChanges();
 
-            return Redirect($"/OrdenVenta/Create/{ordenVenta.IdVenta}");
+            if (ordenVenta.IdProducto != null && ordenVenta.Cantidad != 0)
+            {
+                var producto = context.Productos.Where(x => x.IdProducto == ordenVenta.IdProducto).FirstOrDefault()!;
+                ordenVenta.PrecioUnitario = producto.Precio;
+                ordenVenta.Total = producto.Precio * ordenVenta.Cantidad;
+                context.Add(ordenVenta);
+                context.SaveChanges();
+
+                return Redirect($"/OrdenVenta/Create/{ordenVenta.IdVenta}");
+            }
+            else
+            {
+                ViewBag.Message = "Debe ingresar un producto";
+                ViewBag.CantidadError = "Debe por lo menos pedir un producto";
+                return Redirect($"/OrdenVenta/Create/{ordenVenta.IdVenta}");
+            }
         }
         public async Task<IActionResult> Delete(String id, int otroId)
         {
@@ -106,9 +117,13 @@ namespace soffapp.Controllers
 
         public IActionResult ConfirmSale([Bind(Prefix = "Item2")] Ventum venta)
         {
+            var Venta = context.Venta.Where(x => x.IdVenta == venta.IdVenta).FirstOrDefault()!;
             if (ModelState.IsValid)
             {
-                var Venta = context.Venta.Where(x => x.IdVenta == venta.IdVenta).FirstOrDefault()!;
+                if (venta.Total == 0)
+                {
+                    return Redirect($"/OrdenVenta/Create/{venta.IdVenta}");
+                }
                 Venta.TipoVenta = venta.TipoVenta;
                 Venta.Metodo = venta.Metodo;
                 Venta.Total = venta.Total;
