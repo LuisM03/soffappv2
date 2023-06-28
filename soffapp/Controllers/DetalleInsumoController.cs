@@ -122,7 +122,8 @@ namespace soffapp.Controllers
                     _context.AsociacionProductos.Remove(asociacion);
                     _context.DetalleInsumos.Remove(orden);
                     _context.SaveChanges();
-                    return Redirect($"/DetalleInsumo/Create/{otroId}");
+                detalleInsumo = new DetalleInsumo();
+                return Redirect($"/DetalleInsumo/Create/{otroId}");
             }
         }
 
