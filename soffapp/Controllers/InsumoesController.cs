@@ -19,7 +19,7 @@ namespace soffapp.Controllers
         }
 
         // GET: Insumoes
-        
+
 
         public IActionResult Index()
         {
@@ -57,8 +57,12 @@ namespace soffapp.Controllers
         // GET: Insumoes/Create
         public IActionResult Create()
         {
+            var proveedor = _context.Proveedors.Select(x => new { IdProveedor = x.IdProveedor.ToString(), x.Nombre }).ToList();
+            ViewBag.Proveedor = proveedor;
+
             ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor");
             return View();
+
         }
 
         // POST: Insumoes/Create
@@ -67,6 +71,11 @@ namespace soffapp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("IdInsumo,IdProveedor,Nombre,FechaCaducidad,Stock,Medida,Precio,Estado")] Insumo insumo)
         {
+
+            var proveedor = _context.Proveedors.Select(x => new { IdProveedor = x.IdProveedor.ToString(), x.Nombre }).ToList();
+            ViewBag.Proveedor = proveedor;
+
+
             //if (ModelState.IsValid)
             {
                 _context.Add(insumo);
@@ -76,8 +85,8 @@ namespace soffapp.Controllers
             //else
             {
 
-            ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", insumo.IdProveedor);
-            return View(insumo);
+                ViewData["IdProveedor"] = new SelectList(_context.Proveedors, "IdProveedor", "IdProveedor", insumo.IdProveedor);
+                return View(insumo);
             }
         }
 
@@ -167,14 +176,14 @@ namespace soffapp.Controllers
             {
                 _context.Insumos.Remove(insumo);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool InsumoExists(long id)
         {
-          return (_context.Insumos?.Any(e => e.IdInsumo == id)).GetValueOrDefault();
+            return (_context.Insumos?.Any(e => e.IdInsumo == id)).GetValueOrDefault();
         }
     }
 }
