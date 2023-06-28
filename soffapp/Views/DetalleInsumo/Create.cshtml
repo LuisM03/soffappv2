@@ -7,10 +7,9 @@
 <form class="" asp-action="Create" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-    <input type="hidden" asp-for="Item1.IdInsumo" value="@ViewBag.IdInsumo" />
     <input type="hidden" asp-for="Item2.IdProducto" value="@ViewBag.IdProducto" />
 <div class="grid row g-4 column-2 py-2">
-    <div class="col-8 ">
+    <div class="col-8 row">
             <div class="col-2">
                 <label>Insumo</label>
                 <select class="form-control" asp-for="Item1.IdInsumo" asp-items="@(new SelectList(ViewBag.Insumos, "IdInsumo", "Nombre"))">
@@ -89,7 +88,7 @@
 
         </div>
         <div class="w-100 d-flex flex-column mt-auto">
-            <a class="btn btn-light border mb-2" asp-controller="Productos" asp-action="Delete" asp-route-id="@ViewBag.IdProducto">Cancelar </a>
+            <a class="btn btn-light border mb-2" asp-controller="Productos" asp-action="Index" >Volver a productos </a>
             <button class="btn btn-primary" type="submit">Guardar</button>
         </div>
 </div>
