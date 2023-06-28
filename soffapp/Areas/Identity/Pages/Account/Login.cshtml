@@ -29,19 +29,14 @@
                     <span asp-validation-for="Input.Password" class="text-danger"></span>
                 </div>
 
-                <div class="checkbox mb-3">
-                    <label asp-for="Input.RememberMe" class="form-label">
-                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                    </label>
-                </div>
+
                 <div>
                     <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary btn btn-primary custom-btn" style="width: 370px; height: 45px; flex-shrink: 0;">Iniciar sesion</button>
                 </div>
                 <div>
 
-                    <p class="mt-2 ml-auto">
-                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
+                    <p class="mt-2 ml-auto w-100 d-flex justify-content-end align-items-center">
+                        <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Registrar nuevo usuario</a>
                     </p>
                
                 </div>

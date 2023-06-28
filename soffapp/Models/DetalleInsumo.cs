@@ -11,6 +11,7 @@ public partial class DetalleInsumo
 
     public long IdInsumo { get; set; }
     [Required(ErrorMessage = "Campo requerido")]
+    [Range(1, int.MaxValue)]
 
     public int Cantidad { get; set; }
     [Required(ErrorMessage = "Campo requerido")]
@@ -21,5 +22,5 @@ public partial class DetalleInsumo
 
     public virtual ICollection<AsociacionProducto> AsociacionProductos { get; set; } = new List<AsociacionProducto>();
 
-    public virtual Insumo IdInsumoNavigation { get; set; } = null!;
+    public virtual Insumo? IdInsumoNavigation { get; set; } = null!;
 }
