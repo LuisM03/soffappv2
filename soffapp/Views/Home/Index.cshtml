@@ -1,41 +1,99 @@
 ﻿@{
     ViewData["Title"] = "Dashboard";
 }
-<div class="row mt-5 px-1">
-    <div class="col-sm-4 p-2">
-        <div class="bg-blue">
-            <div c>
+
+@{
+    int Total = Convert.ToInt32(@ViewBag.Total);
+
+    string amountString = Total.ToString();
+    char[] digits = amountString.ToCharArray();
+    Array.Reverse(digits);
+    Console.WriteLine(digits);
+
+    List<char> currencyArray = new List<char>();
+    for (int i = 0; i < digits.Length; i++)
+    {
+        currencyArray.Add(digits[i]);
+
+        if (currencyArray.Count == 7 && digits.Length > 6)
+        {
+            currencyArray.Insert(7, '.');
+        }
+        else if (currencyArray.Count == 3)
+        {
+            currencyArray.Insert(3, '.');
+        }
+    }
+
+
+    currencyArray.Reverse();
+    var totalString = new string(currencyArray.ToArray());
+}
+
+<div class="row mt-5 mb-2 ">
+    <div class="col-sm-4 p-2 h-100" style="height: 220px; max-height: fit-content;">
+        <div class="bg-white border rounded p-2 h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="class d-flex align-items-center">
+                    <span>
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <p class="ml-2 mb-0">Ventas</p>
+                </div>
+                <div class="py-1 px-2 bg-gray-light rounded">
+                    Aumentando @ViewBag.CantidadVentas
+                </div>
             </div>
             <div>
-                <p class="fw-bold text-center">@ViewBag.CantidadVentas</p>
+                <p class="font-weight-bold display-4 text-center">@ViewBag.CantidadVentas</p>
             </div>
-            <div>
-            </div>
+            <p class="text-center">
+                Hicimos un total de @ViewBag.CantidadVentas en lo que va de la semana. Vamos bien, sigue así.
+            </p>
         </div>
     </div>     
-    <div class="col-sm-4 p-2">
-        <div class="bg-blue">
-            <div c>
+    <div class="col-sm-4 p-2 h-100" style="height: 220px; max-height: fit-content;">
+        <div class="bg-white border rounded p-2 h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="class d-flex align-items-center">
+                    <span>
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <p class="ml-2 mb-0">Ventas</p>
+                </div>
+                <div class="py-1 px-2 bg-gray-light rounded">
+                    Aumentando @ViewBag.CantidadVentas
+                </div>
             </div>
             <div>
-                <p class="fw-bold text-center">@ViewBag.CantidadVentas</p>
+                <p class="font-weight-bold display-4 text-center">$@totalString</p>
             </div>
-            <div>
-            </div>
+            <p class="text-center">
+                Hicimos un total de @ViewBag.CantidadVentas en lo que va de la semana. Vamos bien, sigue así.
+            </p>
         </div>
-    </div>     
-    <div class="col-sm-4 p-2">
-        <div class="bg-blue">
-            <div c>
+    </div>
+    <div class="col-sm-4 p-2 h-100" style="height: 220px; max-height: fit-content;">
+        <div class="bg-white border rounded p-2 h-100">
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="class d-flex align-items-center">
+                    <span>
+                        <i class="bi bi-cart-fill"></i>
+                    </span>
+                    <p class="ml-2 mb-0">Ventas</p>
+                </div>
+                <div class="py-1 px-2 bg-gray-light rounded">
+                    Aumentando @ViewBag.CantidadVentas
+                </div>
             </div>
             <div>
-                <p class="fw-bold text-center">@ViewBag.CantidadVentas</p>
+                <p class="font-weight-bold display-4 text-center text-capitalize">@ViewBag.ProductoMasVendido.Nombre</p>
             </div>
-            <div>
-            </div>
+            <p class="text-center">
+                Fijate que el producto más vendido es @ViewBag.ProductoMasVendido.Nombre, a las personas les encanta.
+            </p>
         </div>
-    </div>   
-      
+    </div>
 </div>
 <div class="row mt-2">
     <div class="col-sm-6">

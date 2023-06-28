@@ -82,8 +82,37 @@ namespace soffapp.Controllers
                 DateTime fechaLunes = fechaActual.AddDays(-(int)fechaActual.DayOfWeek + (int)DayOfWeek.Monday);
                 int ventasRealizadas = _dbcontext.Venta.Count(v => v.FechaVenta >= fechaLunes && v.FechaVenta <= fechaActual);
                 ViewBag.CantidadVentas = ventasRealizadas;
-                return View();
 
+
+                DateTime fechaHace7Dias = fechaActual.AddDays(-7);
+
+
+                var productoMasVendido = _dbcontext.Productos
+                      .Join(
+                          _dbcontext.OrdenVenta.Where(ov => ov.IdVentaNavigation.FechaVenta >= fechaHace7Dias && ov.IdVentaNavigation.FechaVenta <= fechaActual),
+                          producto => producto.IdProducto,
+                          ordenVenta => ordenVenta.IdProducto,
+                          (producto, ordenVenta) => new
+                          {
+                              Producto = producto,
+                              Cantidad = ordenVenta.Cantidad
+                          })
+                      .GroupBy(p => p.Producto)
+                      .OrderByDescending(group => group.Sum(p => p.Cantidad))
+                      .Select(group => new {
+                          group.Key.Nombre,
+                          CantidadVecesVendida = group.Sum(p => p.Cantidad),
+                      })
+                      .FirstOrDefault();
+
+
+                ViewBag.Fecha = fechaHace7Dias.ToString();
+                ViewBag.ProductoMasVendido = productoMasVendido;
+
+
+                decimal totalVentas = _dbcontext.Venta.Sum(v => v.Total);
+                ViewBag.Total = totalVentas;
+                return View();
             }
 
         }
