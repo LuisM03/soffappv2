@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace soffapp.Models;
 
 public partial class DetalleInsumo
 {
     public long IdDetalle { get; set; }
+    [Required(ErrorMessage = "Campo requerido")]
 
     public long IdInsumo { get; set; }
+    [Required(ErrorMessage = "Campo requerido")]
 
     public int Cantidad { get; set; }
+    [Required(ErrorMessage = "Campo requerido")]
 
     public string Medida { get; set; } = null!;
 

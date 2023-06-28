@@ -7,20 +7,28 @@
 <div class="grid row g-4 column-2 py-2">
     <div class="col-8">
         <form class="row g-2" asp-action="Create" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
             <input type="hidden" asp-for="Item2.IdProducto" value="@ViewBag.IdProducto" />
             <div class="col-3">
                 <label>Insumo</label>
                 <select class="form-control" asp-for="Item1.IdInsumo" asp-items="@(new SelectList(ViewBag.Insumos, "IdInsumo", "Nombre"))">
-                    <option>Seleccione</option>
+                    <option></option>
                 </select>
+                <span asp-validation-for="Item1.IdInsumo" class="text-danger"></span>
+
             </div>
             <div class="col-2">
                 <label>Cantidad</label>
-                <input type="number" asp-for="Item1.Cantidad" placeholder="Cantidad de insumo" class="form-control" />
+                <input value="" asp-for="Item1.Cantidad" class="form-control" />
+                <span asp-validation-for="Item1.Cantidad" class="text-danger"></span>
+
             </div>
             <div class="col-2">
                 <label>Medida</label>
                 <input type="text" asp-for="Item1.Medida" placeholder="Unidad de medida" class="form-control" />
+                <span asp-validation-for="Item1.Medida" class="text-danger"></span>
+
             </div>
             <input type="hidden" asp-for="Item1.IdInsumo" value="@ViewBag.IdInsumo" />
 
@@ -70,15 +78,18 @@
                 <p class="mb-0">Diagonal 57 #20-27, Navarra/Bello</p>
                 <p class="mb-0">(+57) 3146486791</p>
             </div>
-            
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <hr />
             <div class="">
                 <p class="mb-0"><strong>Nombre</strong></p>
                 <input class="form-control" placeholder="Nombre del producto" asp-for="Item2.Nombre"/>
+                    <span asp-validation-for="Item2.Nombre" class="text-danger"></span>
             </div>
             <div class="">
                 <p class="mb-0"><strong>Precio</strong></p>
-                <input class="form-control" placeholder="Precio del producto" asp-for="Item2.Precio" />
+                <input value="" class="form-control" placeholder="Precio del producto" asp-for="Item2.Precio" />
+                    <span asp-validation-for="Item2.Precio" class="text-danger"></span>
+
             </div>
 
         </div>
@@ -90,3 +101,8 @@
 </div>
 </div>
 
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
