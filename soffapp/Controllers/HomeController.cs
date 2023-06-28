@@ -78,6 +78,10 @@ namespace soffapp.Controllers
             }
             else
             {
+                DateTime fechaActual = DateTime.Now;
+                DateTime fechaLunes = fechaActual.AddDays(-(int)fechaActual.DayOfWeek + (int)DayOfWeek.Monday);
+                int ventasRealizadas = _dbcontext.Venta.Count(v => v.FechaVenta >= fechaLunes && v.FechaVenta <= fechaActual);
+                ViewBag.CantidadVentas = ventasRealizadas;
                 return View();
 
             }

@@ -16,34 +16,39 @@ namespace soffapp.Controllers
 
         public IActionResult Index()
         {
-
-
-            var ventas = context.Venta
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Redirect("/");
+            }else
+            {
+                var ventas = context.Venta
                 .Join(
                   context.OrdenVenta,
                   venta => venta.IdVenta,
                   orden => orden.IdVenta,
                   (venta, orden) => new { Venta = venta, OrdenVenta = orden }
               ).ToList();
-            var ventasConOrdenes = ventas
-                .GroupBy(
-                    v => v.Venta,
-                    v => v.OrdenVenta,
-                    (venta, ordenes) =>
-                    {
-                        venta.OrdenVenta = ordenes.ToList();
-                        return new { 
-                            venta.IdVenta, 
-                            CantidadOrdenes  = venta.OrdenVenta.Count(),
-                            venta.Metodo,
-                            venta.TipoVenta,
-                            venta.FechaVenta,
-                            venta.Total
-                        };
-                    }
-                ).ToList();
-            ViewBag.Ventas = ventasConOrdenes;
-            return View();
+                var ventasConOrdenes = ventas
+                    .GroupBy(
+                        v => v.Venta,
+                        v => v.OrdenVenta,
+                        (venta, ordenes) =>
+                        {
+                            venta.OrdenVenta = ordenes.ToList();
+                            return new
+                            {
+                                venta.IdVenta,
+                                CantidadOrdenes = venta.OrdenVenta.Count(),
+                                venta.Metodo,
+                                venta.TipoVenta,
+                                venta.FechaVenta,
+                                venta.Total
+                            };
+                        }
+                    ).ToList();
+                ViewBag.Ventas = ventasConOrdenes;
+                return View();
+            }
         }
 
         public async Task<IActionResult> Create(Ventum venta)
