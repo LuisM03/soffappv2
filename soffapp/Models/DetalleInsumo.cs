@@ -11,7 +11,7 @@ public partial class DetalleInsumo
 
     public long IdInsumo { get; set; }
     [Required(ErrorMessage = "Campo requerido")]
-    [Range(1, int.MaxValue)]
+    [Range(1, int.MaxValue, ErrorMessage = "La cantidad debe ser mayor a 1")]
 
     public int Cantidad { get; set; }
     [Required(ErrorMessage = "Campo requerido")]
