@@ -63,12 +63,12 @@ namespace soffapp.Controllers
                 detalleInsumo = new DetalleInsumo();
                 ModelState.Clear();
             }
-                ViewBag.NombreProducto = producto.Nombre;
-                ViewBag.PrecioProducto = producto.Precio;
+            ViewBag.NombreProducto = producto.Nombre;
+            ViewBag.PrecioProducto = producto.Precio;
 
-                ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == producto.IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
+            ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == producto.IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
 
-                var insumos = _context.Insumos.Select(x => new { IdInsumo = x.IdInsumo.ToString(), x.Nombre }).ToList();
+            var insumos = _context.Insumos.Select(x => new { IdInsumo = x.IdInsumo.ToString(), x.Nombre }).ToList();
             insumos.Insert(0, new { IdInsumo = "", Nombre = "" });
             ViewBag.Insumos = insumos;
             ViewBag.IdProducto = producto.IdProducto;
@@ -84,7 +84,7 @@ namespace soffapp.Controllers
             var IdProducto = int.Parse(splitData[splitData.Length - 1]);
             ViewBag.IdProducto = IdProducto;
 
-            var producto =_context.Productos.FirstOrDefault(p => p.IdProducto == IdProducto);
+            var producto = _context.Productos.FirstOrDefault(p => p.IdProducto == IdProducto);
 
             ViewBag.NombreProducto = producto.Nombre;
             ViewBag.PrecioProducto = producto.Precio;
@@ -92,12 +92,12 @@ namespace soffapp.Controllers
             ViewBag.Detalles = _context.DetalleInsumos.Where(d => d.AsociacionProductos.Where(a => a.IdProducto == IdProducto).Any()).Select(x => new { x.IdDetalle, x.IdInsumo, x.Cantidad, x.Medida, x.IdInsumoNavigation }).ToList();
 
             ViewBag.Insumos = await _context.Insumos.Select(x => new { x.IdInsumo, x.Nombre }).ToListAsync();
-            Tuple<DetalleInsumo, Producto> models = new Tuple<DetalleInsumo, Producto>(new DetalleInsumo(), new Producto());
+            Tuple<DetalleInsumo, Producto, AsociacionProducto> models = new Tuple<DetalleInsumo, Producto, AsociacionProducto>(new DetalleInsumo(), new Producto(), new AsociacionProducto());
             return View(models);
 
         }
         [HttpPost]
-        public IActionResult Edit([Bind(Prefix = "Item1")] DetalleInsumo detalleInsumo, [Bind(Prefix = "Item2")] Producto producto)
+        public IActionResult Edit([Bind(Prefix = "Item1")] DetalleInsumo detalleInsumo, [Bind(Prefix = "Item2")] Producto producto, [Bind(Prefix = "Item3")] AsociacionProducto asociacionProducto)
         {
             var insumo = _context.Insumos.Where(x => x.IdInsumo == detalleInsumo.IdInsumo).FirstOrDefault()!;
             _context.Update(detalleInsumo);
@@ -120,9 +120,8 @@ namespace soffapp.Controllers
                 var asociacion = _context.AsociacionProductos.FirstOrDefault(a => a.IdProducto == otroId && a.IdDetalleInsumo == long.Parse(id));
                 if (asociacion != null)
                     _context.AsociacionProductos.Remove(asociacion);
-                    _context.DetalleInsumos.Remove(orden);
-                    _context.SaveChanges();
-                detalleInsumo = new DetalleInsumo();
+                _context.DetalleInsumos.Remove(orden);
+                _context.SaveChanges();
                 return Redirect($"/DetalleInsumo/Create/{otroId}");
             }
         }
@@ -143,6 +142,26 @@ namespace soffapp.Controllers
                 _context.SaveChanges();
                 return Redirect($"/DetalleInsumo/Edit/{otroId}");
             }
+
+        }
+        public IActionResult ConfirmSale([Bind(Prefix = "Item2")] Producto producto)
+        {
+            if (ModelState.IsValid)
+            {
+                var Producto = _context.Productos.Where(x => x.IdProducto == producto.IdProducto).FirstOrDefault()!;
+                Producto.Nombre = producto.Nombre;
+                Producto.Precio = producto.Precio;
+                _context.Update(Producto);
+                _context.SaveChanges();
+                return Redirect("/Productos");
+            }
+            else
+            {
+                return Redirect("/Productos");
+            }
+          
+            
         }
     }
 }
+
