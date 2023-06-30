@@ -34,6 +34,10 @@
     </table>
 </div>
 
-<div class="alert alert-dark mt-2">
-    Total compra: @ViewBag.TotalCompra
+
+<div class="alert alert-dark mt-2 d-flex justify-content-between align-items-center h-100">
+    <span>Total compra: @ViewBag.TotalCompra</span>
+    <a asp-area="" asp-controller="Compras" asp-action="Index" class="ml-auto align-self-center" style="text-decoration: none;">
+        <p>Regresar</p>
+    </a>
 </div>
