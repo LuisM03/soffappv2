@@ -1,63 +1,102 @@
 ﻿@model soffapp.Models.Insumo
 
 @{
-    ViewData["Title"] = "Insumo";
+    ViewData["Title"] = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Eliminar</h1>
 
-<h3>Estas seguro que deseas eliminar?</h3>
+<h3>Estas seguro que deseas eliminar el insumo?</h3>
 <div>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nombre)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nombre)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FechaCaducidad)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FechaCaducidad)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Stock)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Stock)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Medida)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Medida)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Precio)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Precio)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Proveedor)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Proveedor.IdProveedor)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="IdInsumo" />
-        <input type="submit" value="Eliminar" class="btn btn-danger" /> |
-        <a class="btn btn-success text-white mt-2 p-2" asp-action="Index">Volver</a>
-    </form>
+    <div>
+        <h4></h4>
+        <div class="mt-4 border rounded bg-white">
+            <table class="table mb-0 table-bordered table-striped">
+
+
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nombre)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FechaCaducidad)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Stock)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Medida)
+
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Precio)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Proveedor)
+
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Estado)
+
+                    </th>
+                    <th>
+                        ACIONES
+                    </th>
+
+
+                </tr>
+                <tr>
+                    <th>
+                        @Html.DisplayFor(model => model.Nombre)
+
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => model.FechaCaducidad)
+
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => model.Stock)
+
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Medida)
+
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => model.Precio)
+
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => model.Proveedor.Nombre)
+
+                    </th>
+                    <th>
+                        @Html.DisplayFor(model => model.Estado)
+
+                    </th>
+                    <th>
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="IdInsumo" />
+                            <input type="submit" value="Eliminar" class="btn btn-danger" />
+                            
+                        </form>
+                    </th>
+
+
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="w-100  d-flex justify-content-center align-items-center">
+        <a class="text-white btn btn-dark  mt-2 p-2" asp-action="Index">Volver</a>
+
+
+
 </div>
