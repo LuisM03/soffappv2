@@ -25,6 +25,7 @@ public partial class Insumo
     public string Medida { get; set; }
 
     [Required(ErrorMessage = "El Precio es requerido")]
+    [RegularExpression("^[0-9]+([.,][0-9]{1,2})?$",ErrorMessage = "Precio")]
     public decimal Precio { get; set; }
 
     [Required(ErrorMessage = "El estado es requerido")]
