@@ -93,6 +93,8 @@ namespace soffapp.Controllers
         // GET: Insumoes/Edit/5
         public async Task<IActionResult> Edit(long? id)
         {
+            var proveedor = _context.Proveedors.Select(x => new { IdProveedor = x.IdProveedor.ToString(), x.Nombre }).ToList();
+            ViewBag.Proveedor = proveedor;
             if (id == null || _context.Insumos == null)
             {
                 return NotFound();
@@ -120,6 +122,8 @@ namespace soffapp.Controllers
             //}
 
             //if (ModelState.IsValid)
+            var proveedor = _context.Proveedors.Select(x => new { IdProveedor = x.IdProveedor.ToString(), x.Nombre }).ToList();
+            ViewBag.Proveedor = proveedor;
             {
                 try
                 {

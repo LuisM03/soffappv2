@@ -1,25 +1,22 @@
 ﻿@model soffapp.Models.Insumo
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
 
-<h4>Insumo</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="row d-flex justify-content-center align-items-center">
+    <div class="col-md-4 border p-2">
+        <h4 class="d-flex justify-content-center align-items-center">Registrar Insumo</h4>
+
         <form asp-action="Create" asp-controller="Insumoes" method="post">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="IdProveedor" class="control-label"></label>
-                <select asp-for="IdProveedor" class="form-control" asp-items="@(new SelectList(ViewBag.Proveedor, "IdProveedor", "Nombre"))"></select>
-
-                
+                <select asp-for="IdProveedor" class="form-control" asp-items="@(new SelectList(ViewBag.Proveedor, "IdProveedor", "Nombre"))"></select>  
             </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
@@ -51,15 +48,16 @@
                 <input asp-for="Estado" class="form-control" />
                 <span asp-validation-for="Estado" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Registar" class="btn btn-primary" />
+            <div class="row">
+                <div class=" colum w-50 d-flex justify-content-center align-items-center">
+                    <input type="submit" value="Registar" class="btn btn-primary" style="width: 90%;" />
+                </div>
+                <div class="colum w-50 d-flex justify-content-center align-items-center">
+                    <a class="text-white btn btn-dark" style="width: 90%;" asp-action="Index">Volver</a>
+                </div>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a class="btn btn-success text-white mt-2 p-2" asp-action="Index">Volver</a>
 </div>
 
 @section Scripts {
